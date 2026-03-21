@@ -4,8 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="renamed">
+    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Classroom.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Course.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Instructor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/International.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Major.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/NonResident.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Profile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Resident.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Schedule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Section.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Standing.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Student.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/StudentList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/Time.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/project2/TriState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/util/Date.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/util/List.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/util/Sort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project_3/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project_3/HelloController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,20 +63,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/divenadeshmukh/Desktop/Project3_Software/src",
-    "settings.editor.selected.configurable": "preferences.JavaFX",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/divenadeshmukh/Desktop/Project3_Software/src&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
@@ -91,32 +111,6 @@
       <option name="presentableId" value="Default" />
       <updated>1774060585543</updated>
     </task>
-    <task id="LOCAL-00001" summary="ok">
-      <option name="closed" value="true" />
-      <created>1774128486014</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1774128486014</updated>
-    </task>
-    <task id="LOCAL-00002" summary="renamed">
-      <option name="closed" value="true" />
-      <created>1774128964048</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1774128964048</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="ok" />
-    <MESSAGE value="renamed" />
-    <option name="LAST_COMMIT_MESSAGE" value="renamed" />
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>
