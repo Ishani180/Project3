@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
  * The Controller Class is used to control the GUI
  * @author Ishani, Divena
  */
-public class HelloController {
+public class Controller {
     private StudentList studentList = new StudentList();
     private Schedule schedule = new Schedule();
     @FXML
@@ -76,9 +76,6 @@ public class HelloController {
             this.creditsCompleted = creditsCompleted;
         }
     }
-
-
-
 
 
 }
