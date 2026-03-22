@@ -12,14 +12,15 @@
         <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE">
             <tabs>
 
-                <Tab text="Students">
+                <!-- ADD / REMOVE STUDENT -->
+                <Tab text="Add/Remove Student">
                     <content>
                         <VBox spacing="15">
                             <padding>
                                 <Insets top="15" right="15" bottom="15" left="15"/>
                             </padding>
 
-                            <GridPane hgap="10" vgap="10">
+                            <GridPane hgap="12" vgap="12">
                                 <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                                 <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
@@ -27,10 +28,12 @@
                                 <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
                                 <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                <TextField fx:id="dobField" promptText="mm/dd/yyyy" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <TextField fx:id="dobField" promptText="mm/dd/yyyy"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
                                 <Label text="Major:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                                <ComboBox fx:id="majorBox" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                <ComboBox fx:id="majorBox" prefWidth="220"
+                                          GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
                                 <Label text="Credits Completed:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
                                 <TextField fx:id="creditsField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
@@ -47,12 +50,12 @@
                             </VBox>
 
                             <HBox spacing="20">
-                                <VBox spacing="5">
+                                <VBox spacing="6">
                                     <Label text="State:"/>
                                     <ComboBox fx:id="stateBox" prefWidth="120"/>
                                 </VBox>
 
-                                <VBox spacing="5">
+                                <VBox spacing="6">
                                     <Label text="Study Abroad:"/>
                                     <CheckBox fx:id="studyAbroadCheckBox" text="Yes"/>
                                 </VBox>
@@ -67,28 +70,34 @@
                     </content>
                 </Tab>
 
-                <Tab text="Sections">
+                <!-- OPEN / CLOSE SECTION -->
+                <Tab text="Open/Close Section">
                     <content>
                         <VBox spacing="15">
                             <padding>
                                 <Insets top="15" right="15" bottom="15" left="15"/>
                             </padding>
 
-                            <GridPane hgap="10" vgap="10">
+                            <GridPane hgap="12" vgap="12">
                                 <Label text="Course:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                <ComboBox fx:id="courseBox" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                <ComboBox fx:id="courseBox" prefWidth="220"
+                                          GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
                                 <Label text="Period:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                <ComboBox fx:id="periodBox" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <ComboBox fx:id="periodBox" prefWidth="220"
+                                          GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
                                 <Label text="Instructor:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                <ComboBox fx:id="instructorBox" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <ComboBox fx:id="instructorBox" prefWidth="220"
+                                          GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
                                 <Label text="Classroom:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                                <ComboBox fx:id="classroomBox" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                <ComboBox fx:id="classroomBox" prefWidth="220"
+                                          GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
                                 <Label text="Time:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                                <TextField fx:id="timeField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                <TextField fx:id="timeField" editable="false"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                             </GridPane>
 
                             <HBox spacing="10">
@@ -98,66 +107,94 @@
                         </VBox>
                     </content>
                 </Tab>
-                <Tab text="Enroll">
+
+                <!-- ENROLL / DROP -->
+                <Tab text="Enroll/Drop">
                     <content>
-                        <VBox spacing="15">
+                        <VBox spacing="20">
                             <padding>
                                 <Insets top="15" right="15" bottom="15" left="15"/>
                             </padding>
 
-                            <GridPane hgap="10" vgap="10">
+                            <HBox spacing="20">
+                                <VBox spacing="10" HBox.hgrow="ALWAYS">
+                                    <Label text="Enroll Student List"/>
+                                    <HBox spacing="10">
+                                        <ComboBox fx:id="enrollStudentBox" prefWidth="220"/>
+                                        <Button text="Load Students" onAction="#handleLoad"/>
+                                    </HBox>
+                                </VBox>
 
-                                <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                <TextField fx:id="enrollFirstNameField"
-                                           GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                <VBox spacing="10" HBox.hgrow="ALWAYS">
+                                    <Label text="Drop Student List"/>
+                                    <HBox spacing="10">
+                                        <ComboBox fx:id="dropStudentBox" prefWidth="220"/>
+                                        <Button text="Load Students" onAction="#handleLoad"/>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
 
-                                <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                <TextField fx:id="enrollLastNameField"
-                                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            <Separator/>
 
-                                <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                <TextField fx:id="enrollDobField" promptText="mm/dd/yyyy"
-                                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            <HBox spacing="30">
+                                <!-- ENROLL SIDE -->
+                                <VBox spacing="12" HBox.hgrow="ALWAYS">
+                                    <Label text="Enroll" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
 
-                                <Label text="Course:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                                <ComboBox fx:id="enrollCourseBox" prefWidth="180"
-                                          GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                    <GridPane hgap="12" vgap="12">
+                                        <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                        <TextField fx:id="enrollFirstNameField"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                                <Label text="Period:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                                <ComboBox fx:id="enrollPeriodBox" prefWidth="180"
-                                          GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                        <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                        <TextField fx:id="enrollLastNameField"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-                            </GridPane>
+                                        <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                        <TextField fx:id="enrollDobField" promptText="mm/dd/yyyy"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                            <Button text="Enroll Student" onAction="#handleEnroll"/>
-                        </VBox>
-                    </content>
-                </Tab>
-                <Tab text="Drop">
-                    <content>
-                        <VBox spacing="15">
-                            <padding>
-                                <Insets top="15" right="15" bottom="15" left="15"/>
-                            </padding>
+                                        <Label text="Course:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                        <ComboBox fx:id="enrollCourseBox" prefWidth="180"
+                                                  GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-                            <GridPane hgap="10" vgap="10">
-                                <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                <TextField fx:id="dropFirstNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                        <Label text="Period:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                                        <ComboBox fx:id="enrollPeriodBox" prefWidth="180"
+                                                  GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                    </GridPane>
 
-                                <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                <TextField fx:id="dropLastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                    <Button text="Enroll" prefWidth="180" onAction="#handleEnroll"/>
+                                </VBox>
 
-                                <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                <TextField fx:id="dropDobField" promptText="mm/dd/yyyy" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <!-- DROP SIDE -->
+                                <VBox spacing="12" HBox.hgrow="ALWAYS">
+                                    <Label text="Drop" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
 
-                                <Label text="Course:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                                <ComboBox fx:id="dropCourseBox" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                    <GridPane hgap="12" vgap="12">
+                                        <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                        <TextField fx:id="dropFirstNameField"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                                <Label text="Period:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                                <ComboBox fx:id="dropTimeBox" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-                            </GridPane>
+                                        <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                        <TextField fx:id="dropLastNameField"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-                            <Button text="Drop Student" onAction="#handleDrop"/>
+                                        <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                        <TextField fx:id="dropDobField" promptText="mm/dd/yyyy"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                                        <Label text="Course:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                        <ComboBox fx:id="dropCourseBox" prefWidth="180"
+                                                  GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                                        <Label text="Period:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                                        <ComboBox fx:id="dropTimeBox" prefWidth="180"
+                                                  GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                    </GridPane>
+
+                                    <Button text="Drop" prefWidth="180" onAction="#handleDrop"/>
+                                </VBox>
+                            </HBox>
                         </VBox>
                     </content>
                 </Tab>

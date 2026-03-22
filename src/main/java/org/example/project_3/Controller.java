@@ -7,6 +7,7 @@ import util.Date;
 import javafx.event.ActionEvent;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 /**
@@ -82,6 +83,10 @@ public class Controller {
     private ComboBox<String> enrollCourseBox;
     @FXML
     private ComboBox<String> enrollPeriodBox;
+    @FXML
+    private ComboBox<String> enrollStudentBox;
+    @FXML
+    private ComboBox<String> dropStudentBox;
 
 
     @FXML
@@ -465,6 +470,116 @@ public class Controller {
         schedule.drop(makeSectionLookupKey(course, time), student);
         printLine("[" + profile + "] dropped from " + course.getNumber() + " " + time);
     }
+    @FXML
+    private void handleLoad() {
+        java.io.File file = new java.io.File("students.txt");
+        try (Scanner fileScanner = new Scanner(file)) {
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine().trim();
+                if (line.isEmpty()) continue;
+                StringTokenizer st = new StringTokenizer(line);
+                if (st.countTokens() < 6) {
+                    printLine("Invalid data tokens.");
+                    return;
+                }
+                String type = st.nextToken().toUpperCase();
+                String first = st.nextToken();
+                String last = st.nextToken();
+                String dobToken = st.nextToken();
+                String majorToken = st.nextToken();
+                String creditsToken = st.nextToken();
+                Date dob = new Date(dobToken);
+                if (!dob.isValid()) {
+                    printLine("Invalid data tokens.");
+                    return;
+                }
+                Major major = parseMajor(majorToken);
+                if (major == null) {
+                    printLine("Invalid data tokens.");
+                    return;
+                }
+                int credits;
+                try {
+                    credits = Integer.parseInt(creditsToken);
+                } catch (Exception e) {
+                    printLine("Invalid data tokens.");
+                    return;
+                }
+                if (credits < 0) {
+                    printLine("Invalid data tokens.");
+                    return;
+                }
+                Profile profile = new Profile(first, last, dob);
+                if (studentList.contains(makeStudentKey(profile))) {
+                    printLine("[" + profile + "] student is already in the list.");
+                    continue;
+                }
+                Student student;
+                switch (type) {
+                    case "R":
+                        student = new Resident(profile, major, credits, 0);
+                        break;
+
+                    case "N":
+                        student = new NonResident(profile, major, credits);
+                        break;
+
+                    case "T":
+                        if (!st.hasMoreTokens()) {
+                            printLine("Invalid data tokens.");
+                            return;
+                        }
+                        String state = st.nextToken().toUpperCase();
+                        if (!state.equals("NY") && !state.equals("CT")) {
+                            printLine("Invalid data tokens.");
+                            return;
+                        }
+                        student = new TriState(profile, major, credits, state);
+                        break;
+
+                    case "I":
+                        if (!st.hasMoreTokens()) {
+                            printLine("Invalid data tokens.");
+                            return;
+                        }
+                        String abroadToken = st.nextToken();
+                        if (!abroadToken.equalsIgnoreCase("true") && !abroadToken.equalsIgnoreCase("false")) {
+                            printLine("Invalid data tokens.");
+                            return;
+                        }
+                        boolean abroad = Boolean.parseBoolean(abroadToken);
+                        student = new International(profile, major, credits, abroad);
+                        break;
+
+                    default:
+                        printLine("Invalid data tokens.");
+                        return;
+                }
+
+                studentList.add(student);
+                String label;
+                if (student instanceof TriState) {
+                    label = "TriState: " + ((TriState) student).getState();
+                } else if (student instanceof International) {
+                    International intl = (International) student;
+                    label = intl.isStudyAbroad() ? "International study abroad" : "International";
+                } else if (student instanceof NonResident) {
+                    label = "Non-Resident";
+                } else if (student instanceof Resident) {
+                    label = "Resident";
+                } else {
+                    label = "Student";
+                }
+
+                printLine("[" + profile + "][" + label + "] added to the list.");
+            }
+            populateStudentBoxes();
+            printLine("Student list loaded from the text file.");
+
+        } catch (java.io.FileNotFoundException e) {
+            printLine("File not found.");
+        }
+    }
 
     //Helper Methods
 
@@ -608,6 +723,19 @@ public class Controller {
         int currentlyEnrolled = schedule.creditsEnrolled(student);
         int afterEnroll = currentlyEnrolled + course.getCredits();
         return afterEnroll > CREDIT_LIMIT;
+    }
+    private void populateStudentBoxes() {
+        enrollStudentBox.getItems().clear();
+        dropStudentBox.getItems().clear();
+
+        for (int i = 0; i < studentList.size(); i++) {
+            Student s = studentList.get(i);
+            if (s != null) {
+                String display = s.getProfile().toString();
+                enrollStudentBox.getItems().add(display);
+                dropStudentBox.getItems().add(display);
+            }
+        }
     }
 }
 
