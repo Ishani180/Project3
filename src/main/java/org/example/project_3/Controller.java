@@ -277,69 +277,50 @@ public class Controller {
     }
     @FXML
     private void handleOpenSection() {
-
-        // 1. Check missing input
         if (courseField.getText().isEmpty() ||
                 periodField.getText().isEmpty() ||
                 instructorField.getText().isEmpty() ||
                 classroomField.getText().isEmpty()) {
-
             outputArea.setText("Missing data in command line.");
             return;
         }
-
-        // 2. Parse inputs
         Course course = parseCourseOrPrint(courseField.getText());
         if (course == null) {
             outputArea.setText("INVALID: course name does not exist.");
             return;
         }
-
         Time time = parseTimeOrPrint(periodField.getText());
         if (time == null) {
             outputArea.setText("INVALID: period does not exist.");
             return;
         }
-
         Instructor instructor = parseInstructorOrPrint(instructorField.getText());
         if (instructor == null) {
             outputArea.setText("INVALID: instructor does not exist.");
             return;
         }
-
         Classroom classroom = parseClassroomOrPrint(classroomField.getText());
         if (classroom == null) {
             outputArea.setText("INVALID: classroom does not exist.");
             return;
         }
-
-        // 3. Create section
         Section section = new Section(course, time, instructor, classroom);
-
-        // 4. Validation checks
         if (schedule.contains(section)) {
             outputArea.setText("INVALID: " + course.getNumber() +
                     " period " + periodOf(time) + " already exists.");
             return;
         }
-
         if (!schedule.isInstructorAvailable(time, instructor)) {
             outputArea.setText("INVALID: " + instructor + " time conflict.");
             return;
         }
-
         if (!schedule.isClassroomAvailable(time, classroom)) {
             outputArea.setText("INVALID: [" + classroom + "] not available.");
             return;
         }
-
-        // 5. Add section
         schedule.add(section);
         outputArea.setText(section + " added to the schedule.");
     }
-
-    //Helper Methods
-
     private Course parseCourse(String token) {
         try {
             return Course.valueOf(token.toUpperCase());
@@ -347,8 +328,6 @@ public class Controller {
             return null;
         }
     }
-
-
     private Instructor parseInstructorOrPrint(String token) {
         Instructor instructor = parseInstructor(token);
         if (instructor == null) {
@@ -356,8 +335,6 @@ public class Controller {
         }
         return instructor;
     }
-
-
     private Classroom parseClassroomOrPrint(String token) {
         Classroom classroom = parseClassroom(token);
         if (classroom == null) {
@@ -365,8 +342,6 @@ public class Controller {
         }
         return classroom;
     }
-
-
     private Integer parseInt(String token) {
         try {
             return Integer.parseInt(token);
@@ -374,8 +349,6 @@ public class Controller {
             return null;
         }
     }
-
-
     private Course parseCourseOrPrint(String token) {
         Course course = parseCourse(token);
         if (course == null) {
@@ -383,7 +356,6 @@ public class Controller {
         }
         return course;
     }
-
     private Instructor parseInstructor(String token) {
         try {
             return Instructor.valueOf(token.toUpperCase());
@@ -391,7 +363,6 @@ public class Controller {
             return null;
         }
     }
-
     private Classroom parseClassroom(String token) {
         try {
             return Classroom.valueOf(token.toUpperCase());
@@ -399,8 +370,6 @@ public class Controller {
             return null;
         }
     }
-
-
     private Time parseTimeOrPrint(String periodToken) {
         Integer period = parseInt(periodToken);
         if (period == null || period < FIRST_PERIOD || period > LAST_PERIOD) {
@@ -409,7 +378,6 @@ public class Controller {
         }
         return Time.valueOf("P" + period);
     }
-
     private int periodOf(Time time) {
         return Integer.parseInt(time.name().substring(1));
     }
