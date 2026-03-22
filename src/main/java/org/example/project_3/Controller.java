@@ -382,8 +382,5 @@ public class Controller {
         return Integer.parseInt(time.name().substring(1));
     }
 
-
-
-
 }
 
