@@ -338,6 +338,84 @@ public class Controller {
         outputArea.setText(section + " added to the schedule.");
     }
 
+    //Helper Methods
+
+    private Course parseCourse(String token) {
+        try {
+            return Course.valueOf(token.toUpperCase());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+    private Instructor parseInstructorOrPrint(String token) {
+        Instructor instructor = parseInstructor(token);
+        if (instructor == null) {
+            printLine("INVALID: faculty " + token + " does not exist.");
+        }
+        return instructor;
+    }
+
+
+    private Classroom parseClassroomOrPrint(String token) {
+        Classroom classroom = parseClassroom(token);
+        if (classroom == null) {
+            printLine("INVALID: location " + token + " does not exist.");
+        }
+        return classroom;
+    }
+
+
+    private Integer parseInt(String token) {
+        try {
+            return Integer.parseInt(token);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+    private Course parseCourseOrPrint(String token) {
+        Course course = parseCourse(token);
+        if (course == null) {
+            printLine("INVALID: course name " + token + " does not exist.");
+        }
+        return course;
+    }
+
+    private Instructor parseInstructor(String token) {
+        try {
+            return Instructor.valueOf(token.toUpperCase());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private Classroom parseClassroom(String token) {
+        try {
+            return Classroom.valueOf(token.toUpperCase());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+    private Time parseTimeOrPrint(String periodToken) {
+        Integer period = parseInt(periodToken);
+        if (period == null || period < FIRST_PERIOD || period > LAST_PERIOD) {
+            printLine("INVALID: period " + periodToken + " does not exist.");
+            return null;
+        }
+        return Time.valueOf("P" + period);
+    }
+
+    private int periodOf(Time time) {
+        return Integer.parseInt(time.name().substring(1));
+    }
+
+
+
 
 }
 
