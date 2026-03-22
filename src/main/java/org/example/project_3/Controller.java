@@ -277,8 +277,6 @@ public class Controller {
     }
 
 
-
-
     @FXML
     private void handleOpenSection() {
 
@@ -341,6 +339,7 @@ public class Controller {
         schedule.add(section);
         outputArea.setText(section + " added to the schedule.");
     }
+
 
 }
 
