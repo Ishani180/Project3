@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.project_3.Controller">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
+    <!-- Student Info -->
+    <TextField fx:id="firstNameField" promptText="First Name"/>
+    <TextField fx:id="lastNameField" promptText="Last Name"/>
+    <TextField fx:id="dobField" promptText="DOB (mm/dd/yyyy)"/>
+
+    <!-- Major -->
+    <ComboBox fx:id="majorBox" promptText="Select Major"/>
+
+    <!-- Credits -->
+    <TextField fx:id="creditsField" promptText="Credits"/>
+
+    <!-- Student Type -->
+    <RadioButton fx:id="residentRadio" text="Resident"/>
+    <RadioButton fx:id="nonResidentRadio" text="Non-Resident"/>
+    <RadioButton fx:id="triStateRadio" text="Tri-State"/>
+    <RadioButton fx:id="internationalRadio" text="International"/>
+
+    <!-- Extra Fields -->
+    <ComboBox fx:id="stateBox" promptText="State"/>
+    <CheckBox fx:id="studyAbroadCheckBox" text="Study Abroad"/>
+
+    <!-- Buttons -->
+    <Button text="Remove Student" onAction="#handleRemove"/>
+    <Button text="Open Section" onAction="#handleOpenSection"/>
+
+    <!-- Output -->
+    <TextArea fx:id="outputArea" prefHeight="200"/>
+
 </VBox>
