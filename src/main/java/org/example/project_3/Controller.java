@@ -229,8 +229,50 @@ public class Controller {
         return age < MINIMUM_AGE;
     }
     private Student makeStudentKey(Profile profile) {
-        return new Resident(profile, Major.CS, 0, 0);
+        if (residentRadio.isSelected()) {
+            return new Resident(profile, Major.CS, 0, 0);
+        } else if (nonResidentRadio.isSelected()) {
+            return new NonResident(profile, Major.CS, 0);
+        } else if (triStateRadio.isSelected()) {
+            String state = stateBox.getValue();
+            return new TriState(profile, Major.CS, 0, state);
+        } else if (internationalRadio.isSelected()) {
+            boolean studyAbroad = studyAbroadCheckBox.isSelected();
+            return new International(profile, Major.CS, 0, studyAbroad);
+        }
+        return null;
     }
+    @FXML
+    private void handleRemove(){
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String dobText = dobField.getText().trim();
+        if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()){
+            printLine("Missing required fields.");
+            return;
+        }
+        Date dob = new Date(dobText);
+        if (!dob.isValid()){
+            printLine("INVALID: " + dobText + " is not a valid calendar date!");
+            return;
+        }
+        Profile profile = new Profile(firstName, lastName, dob);
+        Student key = makeStudentKey(profile);
+        if (key == null){
+            printLine("Select a student type.");
+            return;
+        }
+        if(!studentList.contains(key)){
+            printLine("[" + profile + "] is not in the student list.");
+            return;
+        }
+        studentList.remove(key);
+        printLine("[" + profile + "] removed from the list.");
+
+    }
+
+
+
 
 }
 
