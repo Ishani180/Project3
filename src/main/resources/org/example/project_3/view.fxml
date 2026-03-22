@@ -137,7 +137,6 @@
                             <Separator/>
 
                             <HBox spacing="30">
-                                <!-- ENROLL SIDE -->
                                 <VBox spacing="12" HBox.hgrow="ALWAYS">
                                     <Label text="Enroll" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
 
@@ -166,7 +165,6 @@
                                     <Button text="Enroll" prefWidth="180" onAction="#handleEnroll"/>
                                 </VBox>
 
-                                <!-- DROP SIDE -->
                                 <VBox spacing="12" HBox.hgrow="ALWAYS">
                                     <Label text="Drop" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
 
@@ -198,45 +196,42 @@
                         </VBox>
                     </content>
                 </Tab>
-                <Tab text="Enroll/Drop">
-                    ...
-                </Tab>
 
+                <!-- SCHOLARSHIP -->
                 <Tab text="Scholarship">
                     <content>
                         <AnchorPane>
                             <children>
-
-                                <Label layoutX="45.0" layoutY="55.0" text="First Name" />
+                                <Label layoutX="45.0" layoutY="55.0" text="First Name"/>
                                 <TextField fx:id="scholarshipFirstNameField"
                                            layoutX="150.0" layoutY="48.0"
-                                           prefWidth="480.0" />
+                                           prefWidth="480.0"/>
 
-                                <Label layoutX="45.0" layoutY="115.0" text="Last Name" />
+                                <Label layoutX="45.0" layoutY="115.0" text="Last Name"/>
                                 <TextField fx:id="scholarshipLastNameField"
                                            layoutX="150.0" layoutY="108.0"
-                                           prefWidth="480.0" />
+                                           prefWidth="480.0"/>
 
-                                <Label layoutX="45.0" layoutY="175.0" text="Date of Birth" />
+                                <Label layoutX="45.0" layoutY="175.0" text="Date of Birth"/>
                                 <TextField fx:id="scholarshipDobField"
                                            layoutX="150.0" layoutY="168.0"
                                            prefWidth="480.0"
-                                           promptText="mm/dd/yyyy" />
+                                           promptText="mm/dd/yyyy"/>
 
-                                <Label layoutX="45.0" layoutY="235.0" text="Amount" />
+                                <Label layoutX="45.0" layoutY="235.0" text="Amount"/>
                                 <TextField fx:id="scholarshipField"
                                            layoutX="150.0" layoutY="228.0"
-                                           prefWidth="480.0" />
+                                           prefWidth="480.0"/>
 
                                 <Button text="Update Scholarship Amount"
                                         layoutX="150.0" layoutY="295.0"
                                         prefWidth="210.0"
                                         onAction="#handleScholarshipFX"/>
-
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
+
             </tabs>
         </TabPane>
     </center>
