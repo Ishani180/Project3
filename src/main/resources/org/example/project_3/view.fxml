@@ -198,17 +198,53 @@
                         </VBox>
                     </content>
                 </Tab>
+                <Tab text="Enroll/Drop">
+                    ...
+                </Tab>
 
+                <Tab text="Scholarship">
+                    <content>
+                        <AnchorPane>
+                            <children>
+
+                                <Label layoutX="45.0" layoutY="55.0" text="First Name" />
+                                <TextField fx:id="scholarshipFirstNameField"
+                                           layoutX="150.0" layoutY="48.0"
+                                           prefWidth="480.0" />
+
+                                <Label layoutX="45.0" layoutY="115.0" text="Last Name" />
+                                <TextField fx:id="scholarshipLastNameField"
+                                           layoutX="150.0" layoutY="108.0"
+                                           prefWidth="480.0" />
+
+                                <Label layoutX="45.0" layoutY="175.0" text="Date of Birth" />
+                                <TextField fx:id="scholarshipDobField"
+                                           layoutX="150.0" layoutY="168.0"
+                                           prefWidth="480.0"
+                                           promptText="mm/dd/yyyy" />
+
+                                <Label layoutX="45.0" layoutY="235.0" text="Amount" />
+                                <TextField fx:id="scholarshipField"
+                                           layoutX="150.0" layoutY="228.0"
+                                           prefWidth="480.0" />
+
+                                <Button text="Update Scholarship Amount"
+                                        layoutX="150.0" layoutY="295.0"
+                                        prefWidth="210.0"
+                                        onAction="#handleScholarshipFX"/>
+
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
     </center>
-
     <bottom>
         <TextArea fx:id="outputArea"
                   editable="false"
                   wrapText="true"
                   prefRowCount="10"/>
     </bottom>
-
 </BorderPane>
 

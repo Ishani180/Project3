@@ -91,8 +91,12 @@ public class Controller {
     private TextField majorField;
     @FXML
     private TextField scholarshipField;
-
-
+    @FXML
+    private TextField scholarshipFirstNameField;
+    @FXML
+    private TextField scholarshipLastNameField;
+    @FXML
+    private TextField scholarshipDobField;
     @FXML
     private void updateExtraFields(){
         boolean isTriState = triStateRadio.isSelected();
@@ -584,32 +588,28 @@ public class Controller {
             printLine("File not found.");
         }
     }
-
-
     @FXML
     private void handleScholarshipFX() {
-        // Clear previous messages
         outputArea.clear();
 
-        // Build a profile string tokenizer from text fields
-        String profileInput = firstNameField.getText().trim() + " " +
-                lastNameField.getText().trim() + " " +
-                majorField.getText().trim();
-
-        StringTokenizer tokenizer = new StringTokenizer(profileInput);
-        if (tokenizer.countTokens() < 3) {
-            outputArea.setText("ERROR: Missing profile data (first, last, major).");
+        String first = scholarshipFirstNameField.getText().trim();
+        String last = scholarshipLastNameField.getText().trim();
+        String dobText = scholarshipDobField.getText().trim();
+        if (first.isEmpty() || last.isEmpty() || dobText.isEmpty()) {
+            outputArea.setText("ERROR: Missing profile data (first, last, dob).");
             return;
         }
-
-        Profile profile = readProfile(tokenizer);
+        Date dob = new Date(dobText);
+        if (!dob.isValid()) {
+            outputArea.setText("ERROR: Invalid date of birth.");
+            return;
+        }
+        Profile profile = new Profile(first, last, dob);
         Student student = getStudentOrPrint(profile);
         if (student == null) {
             outputArea.setText("ERROR: Student not found: " + profile);
             return;
         }
-
-        // Parse scholarship amount
         String amountInput = scholarshipField.getText().trim();
         int amount;
         try {
@@ -635,7 +635,6 @@ public class Controller {
             return;
         }
 
-        // Update scholarship
         Resident resident = (Resident) student;
         resident.setScholarship(amount);
 
