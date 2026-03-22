@@ -1,37 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 
-<VBox spacing="10" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.project_3.Controller">
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.project_3.Controller">
 
     <!-- Student Info -->
-    <TextField fx:id="firstNameField" promptText="First Name"/>
-    <TextField fx:id="lastNameField" promptText="Last Name"/>
-    <TextField fx:id="dobField" promptText="DOB (mm/dd/yyyy)"/>
+    <TextField fx:id="firstNameField" promptText="First Name" />
+    <TextField fx:id="lastNameField" promptText="Last Name" />
+    <TextField fx:id="dobField" promptText="DOB (mm/dd/yyyy)" />
 
     <!-- Major -->
-    <ComboBox fx:id="majorBox" promptText="Select Major"/>
+    <ComboBox fx:id="majorBox" promptText="Select Major" />
 
     <!-- Credits -->
-    <TextField fx:id="creditsField" promptText="Credits"/>
+    <TextField fx:id="creditsField" promptText="Credits" />
 
     <!-- Student Type -->
-    <RadioButton fx:id="residentRadio" text="Resident"/>
-    <RadioButton fx:id="nonResidentRadio" text="Non-Resident"/>
-    <RadioButton fx:id="triStateRadio" text="Tri-State"/>
-    <RadioButton fx:id="internationalRadio" text="International"/>
+    <RadioButton fx:id="residentRadio" text="Resident" />
+    <RadioButton fx:id="nonResidentRadio" text="Non-Resident" />
+    <RadioButton fx:id="triStateRadio" text="Tri-State" />
+    <RadioButton fx:id="internationalRadio" text="International" />
 
     <!-- Extra Fields -->
-    <ComboBox fx:id="stateBox" promptText="State"/>
-    <CheckBox fx:id="studyAbroadCheckBox" text="Study Abroad"/>
+    <ComboBox fx:id="stateBox" promptText="State" />
+    <CheckBox fx:id="studyAbroadCheckBox" prefHeight="18.0" prefWidth="136.0" text="Study Abroad" />
 
     <!-- Buttons -->
-    <Button text="Remove Student" onAction="#handleRemove"/>
-    <Button text="Open Section" onAction="#handleOpenSection"/>
+    <Button onAction="#handleRemove" text="Remove Student" />
+    <Button onAction="#handleOpenSection" text="Open Section" />
 
     <!-- Output -->
-    <TextArea fx:id="outputArea" prefHeight="200"/>
+    <TextArea fx:id="outputArea" prefHeight="200" />
 
 </VBox>
