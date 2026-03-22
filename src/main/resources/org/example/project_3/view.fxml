@@ -98,7 +98,41 @@
                         </VBox>
                     </content>
                 </Tab>
+                <Tab text="Enroll">
+                    <content>
+                        <VBox spacing="15">
+                            <padding>
+                                <Insets top="15" right="15" bottom="15" left="15"/>
+                            </padding>
 
+                            <GridPane hgap="10" vgap="10">
+
+                                <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <TextField fx:id="enrollFirstNameField"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <TextField fx:id="enrollLastNameField"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                <TextField fx:id="enrollDobField" promptText="mm/dd/yyyy"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                                <Label text="Course:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                <ComboBox fx:id="enrollCourseBox" prefWidth="180"
+                                          GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                                <Label text="Period:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                                <ComboBox fx:id="enrollPeriodBox" prefWidth="180"
+                                          GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                            </GridPane>
+
+                            <Button text="Enroll Student" onAction="#handleEnroll"/>
+                        </VBox>
+                    </content>
+                </Tab>
                 <Tab text="Drop">
                     <content>
                         <VBox spacing="15">

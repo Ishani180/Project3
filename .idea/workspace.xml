@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="view.fxml" />
+    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="view.fxml">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project_3/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project_3/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/project_3/view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/project_3/view.fxml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -185,7 +188,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774219208532</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="view.fxml">
+      <option name="closed" value="true" />
+      <created>1774219445725</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1774219445725</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

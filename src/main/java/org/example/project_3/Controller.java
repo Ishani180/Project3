@@ -72,6 +72,16 @@ public class Controller {
 
     @FXML
     private ComboBox<String> dropTimeBox;
+    @FXML
+    private TextField enrollFirstNameField;
+    @FXML
+    private TextField enrollLastNameField;
+    @FXML
+    private TextField enrollDobField;
+    @FXML
+    private ComboBox<String> enrollCourseBox;
+    @FXML
+    private ComboBox<String> enrollPeriodBox;
 
 
     @FXML
@@ -372,71 +382,51 @@ public class Controller {
         printLine(course.getNumber() + " " + time + " removed.");
     }
     @FXML
-    private void handleEnroll(ActionEvent event) {
-        String firstName = firstNameField.getText().trim();
-        String lastName = lastNameField.getText().trim();
-        String dobText = dobField.getText().trim();
-        String courseText = courseBox.getValue();
-        String periodText = periodBox.getValue();
-        if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()
-                || courseText == null || periodText == null) {
-            printLine("Missing data in command line.");
+    private void handleEnroll() {
+        String first = enrollFirstNameField.getText().trim();
+        String last = enrollLastNameField.getText().trim();
+        String dobText = enrollDobField.getText().trim();
+        if (first.isEmpty() || last.isEmpty() || dobText.isEmpty()) {
+            printLine("Missing data in input fields.");
             return;
         }
         Date dob = new Date(dobText);
-        Profile profile = new Profile(firstName, lastName, dob);
+        if (!dob.isValid()) {
+            printLine("Invalid date of birth.");
+            return;
+        }
+        Profile profile = new Profile(first, last, dob);
         Student student = getStudentOrPrint(profile);
-        if (student == null) {
+        if (student == null) return;
+        String courseStr = enrollCourseBox.getValue();
+        if (courseStr == null) {
+            printLine("Course not selected.");
             return;
         }
-        Course course = parseCourseOrPrint(courseText);
-        if (course == null) {
+        Course course = parseCourseOrPrint(courseStr);
+        if (course == null) return;
+        String periodStr = enrollPeriodBox.getValue();
+        if (periodStr == null) {
+            printLine("Period not selected.");
             return;
         }
-        Time time = parseTimeOrPrint(periodText);
-        if (time == null) {
-            return;
-        }
+        Time time = parseTimeOrPrint(periodStr);
+        if (time == null) return;
         Section section = getSectionOrPrint(course, time);
-        if (section == null) {
-            return;
-        }
+        if (section == null) return;
         if (schedule.alreadyEnrolledInCourse(student, course)) {
             printLine("[" + profile + "] already enrolled in " + course.getNumber());
             return;
         }
-        if (!meetsStandingPrereq(student, course, profile)) {
-            return;
-        }
-        if (!meetsMajorPrereq(student, course, profile)) {
-            return;
-        }
+        if (!meetsStandingPrereq(student, course, profile)) return;
+        if (!meetsMajorPrereq(student, course, profile)) return;
         if (schedule.hasTimeConflict(student, time)) {
-            printLine("Time conflict: [" + profile + "] enrolled in another class at period " + periodOf(time));
+            printLine("Time conflict.");
             return;
-        }
-        if (section.isFull()) {
-            printLine("Cannot enroll [" + profile + "], " + course.getNumber() + " " + time + " is full.");
-            return;
-        }
-        if (exceedsCreditLimit(student, course)) {
-            int current = schedule.creditsEnrolled(student);
-            printLine("Cannot enroll [" + profile + "]; now has " + current
-                    + " will exceeds credit limit of " + CREDIT_LIMIT + ".");
-            return;
-        }
-        if (student instanceof International) {
-            International intl = (International) student;
-            if (intl.isStudyAbroad()) {
-                int current = schedule.creditsEnrolled(student);
-                if (current + course.getCredits() > 12) {
-                    printLine("International student study abroad cannot enroll more than 12 credits.");
-                    return;
-                }
-            }
         }
         schedule.enroll(makeSectionLookupKey(course, time), student);
-        printLine("[" + profile + "] added to " + course.getNumber() + " " + time);
+
+        printLine("[" + profile + "] enrolled in " + course.getNumber() + " " + time);
     }
     @FXML
     private void handleDrop(ActionEvent event) {
