@@ -275,8 +275,6 @@ public class Controller {
         printLine("[" + profile + "] removed from the list.");
 
     }
-
-
     @FXML
     private void handleOpenSection() {
 
