@@ -4,6 +4,7 @@ import project2.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import util.Date;
+import javafx.event.ActionEvent;
 
 import java.time.LocalDate;
 import java.util.StringTokenizer;
@@ -369,42 +370,43 @@ public class Controller {
                 course.getNumber() + " " + time + " removed successfully.");
 
     }
-    private void handleEnroll(StringTokenizer tokenizer) {
-        if (tokenizer.countTokens() < 5) {
+    @FXML
+    private void handleEnroll(ActionEvent event) {
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String dobText = dobField.getText().trim();
+        String courseText = courseField.getText().trim();
+        String timeText = timeField.getText().trim();
+        if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()
+                || courseText.isEmpty() || timeText.isEmpty()) {
             printLine("Missing data in command line.");
             return;
         }
-
-        Profile profile = readProfile(tokenizer);
+        Date dob = new Date(dobText);
+        Profile profile = new Profile(firstName, lastName, dob);
         Student student = getStudentOrPrint(profile);
         if (student == null) {
             return;
         }
-
-        Course course = parseCourseOrPrint(tokenizer.nextToken());
+        Course course = parseCourseOrPrint(courseText);
         if (course == null) {
             return;
         }
-
-        Time time = parseTimeOrPrint(tokenizer.nextToken());
+        Time time = parseTimeOrPrint(timeText);
         if (time == null) {
             return;
         }
-
         Section section = getSectionOrPrint(course, time);
         if (section == null) {
             return;
         }
-
         if (schedule.alreadyEnrolledInCourse(student, course)) {
             printLine("[" + profile + "] already enrolled in " + course.getNumber());
             return;
         }
-
         if (!meetsStandingPrereq(student, course, profile)) {
             return;
         }
-
         if (!meetsMajorPrereq(student, course, profile)) {
             return;
         }
@@ -413,20 +415,16 @@ public class Controller {
             printLine("Time conflict: [" + profile + "] enrolled in another class at period " + periodOf(time));
             return;
         }
-
         if (section.isFull()) {
             printLine("Cannot enroll [" + profile + "], " + course.getNumber() + " " + time + " is full.");
             return;
         }
-
         if (exceedsCreditLimit(student, course)) {
             int current = schedule.creditsEnrolled(student);
             printLine("Cannot enroll [" + profile + "]; now has " + current
                     + " will exceeds credit limit of " + CREDIT_LIMIT + ".");
             return;
         }
-
-        // Study abroad max 12 credit rule
         if (student instanceof International) {
             International intl = (International) student;
             if (intl.isStudyAbroad()) {
@@ -437,11 +435,9 @@ public class Controller {
                 }
             }
         }
-
         schedule.enroll(makeSectionLookupKey(course, time), student);
         printLine("[" + profile + "] added to " + course.getNumber() + " " + time);
     }
-
     //Helper Methods
 
     private Section makeSectionLookupKey(Course course, Time time) {
@@ -585,6 +581,5 @@ public class Controller {
         int afterEnroll = currentlyEnrolled + course.getCredits();
         return afterEnroll > CREDIT_LIMIT;
     }
-
 }
 
