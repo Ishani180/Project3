@@ -45,6 +45,11 @@ public class Controller {
     private CheckBox studyAbroadCheckBox;
     @FXML
     private TextArea outputArea;
+    @FXML private TextField courseField;
+    @FXML private TextField periodField;
+    @FXML private TextField instructorField;
+    @FXML private TextField classroomField;
+
     @FXML
     private void updateExtraFields(){
         boolean isTriState = triStateRadio.isSelected();
@@ -230,6 +235,69 @@ public class Controller {
     }
     private Student makeStudentKey(Profile profile) {
         return new Resident(profile, Major.CS, 0, 0);
+    }
+
+    @FXML
+    private void handleOpenSection() {
+
+        // 1. Check missing input
+        if (courseField.getText().isEmpty() ||
+                periodField.getText().isEmpty() ||
+                instructorField.getText().isEmpty() ||
+                classroomField.getText().isEmpty()) {
+
+            outputArea.setText("Missing data in command line.");
+            return;
+        }
+
+        // 2. Parse inputs
+        Course course = parseCourseOrPrint(courseField.getText());
+        if (course == null) {
+            outputArea.setText("INVALID: course name does not exist.");
+            return;
+        }
+
+        Time time = parseTimeOrPrint(periodField.getText());
+        if (time == null) {
+            outputArea.setText("INVALID: period does not exist.");
+            return;
+        }
+
+        Instructor instructor = parseInstructorOrPrint(instructorField.getText());
+        if (instructor == null) {
+            outputArea.setText("INVALID: instructor does not exist.");
+            return;
+        }
+
+        Classroom classroom = parseClassroomOrPrint(classroomField.getText());
+        if (classroom == null) {
+            outputArea.setText("INVALID: classroom does not exist.");
+            return;
+        }
+
+        // 3. Create section
+        Section section = new Section(course, time, instructor, classroom);
+
+        // 4. Validation checks
+        if (schedule.contains(section)) {
+            outputArea.setText("INVALID: " + course.getNumber() +
+                    " period " + periodOf(time) + " already exists.");
+            return;
+        }
+
+        if (!schedule.isInstructorAvailable(time, instructor)) {
+            outputArea.setText("INVALID: " + instructor + " time conflict.");
+            return;
+        }
+
+        if (!schedule.isClassroomAvailable(time, classroom)) {
+            outputArea.setText("INVALID: [" + classroom + "] not available.");
+            return;
+        }
+
+        // 5. Add section
+        schedule.add(section);
+        outputArea.setText(section + " added to the schedule.");
     }
 
 }
