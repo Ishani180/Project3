@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import util.Date;
 
 import java.time.LocalDate;
+import java.util.StringTokenizer;
 
 /**
  * The Controller Class is used to control the GUI
@@ -368,6 +369,78 @@ public class Controller {
                 course.getNumber() + " " + time + " removed successfully.");
 
     }
+    private void handleEnroll(StringTokenizer tokenizer) {
+        if (tokenizer.countTokens() < 5) {
+            printLine("Missing data in command line.");
+            return;
+        }
+
+        Profile profile = readProfile(tokenizer);
+        Student student = getStudentOrPrint(profile);
+        if (student == null) {
+            return;
+        }
+
+        Course course = parseCourseOrPrint(tokenizer.nextToken());
+        if (course == null) {
+            return;
+        }
+
+        Time time = parseTimeOrPrint(tokenizer.nextToken());
+        if (time == null) {
+            return;
+        }
+
+        Section section = getSectionOrPrint(course, time);
+        if (section == null) {
+            return;
+        }
+
+        if (schedule.alreadyEnrolledInCourse(student, course)) {
+            printLine("[" + profile + "] already enrolled in " + course.getNumber());
+            return;
+        }
+
+        if (!meetsStandingPrereq(student, course, profile)) {
+            return;
+        }
+
+        if (!meetsMajorPrereq(student, course, profile)) {
+            return;
+        }
+
+        if (schedule.hasTimeConflict(student, time)) {
+            printLine("Time conflict: [" + profile + "] enrolled in another class at period " + periodOf(time));
+            return;
+        }
+
+        if (section.isFull()) {
+            printLine("Cannot enroll [" + profile + "], " + course.getNumber() + " " + time + " is full.");
+            return;
+        }
+
+        if (exceedsCreditLimit(student, course)) {
+            int current = schedule.creditsEnrolled(student);
+            printLine("Cannot enroll [" + profile + "]; now has " + current
+                    + " will exceeds credit limit of " + CREDIT_LIMIT + ".");
+            return;
+        }
+
+        // Study abroad max 12 credit rule
+        if (student instanceof International) {
+            International intl = (International) student;
+            if (intl.isStudyAbroad()) {
+                int current = schedule.creditsEnrolled(student);
+                if (current + course.getCredits() > 12) {
+                    printLine("International student study abroad cannot enroll more than 12 credits.");
+                    return;
+                }
+            }
+        }
+
+        schedule.enroll(makeSectionLookupKey(course, time), student);
+        printLine("[" + profile + "] added to " + course.getNumber() + " " + time);
+    }
 
     //Helper Methods
 
@@ -442,6 +515,75 @@ public class Controller {
     }
     private int periodOf(Time time) {
         return Integer.parseInt(time.name().substring(1));
+    }
+    private Profile readProfileFromFields() {
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String dobText = dobField.getText().trim();
+
+        Date dob = new Date(dobText);
+        if (!dob.isValid()) {
+            printLine("INVALID: " + dobText + " is not a valid calendar date!");
+            return null;
+        }
+
+        return new Profile(firstName, lastName, dob);
+    }
+    private String standingPretty(Standing standing) {
+        switch (standing) {
+            case FRESHMAN:
+                return "Freshman";
+            case SOPHOMORE:
+                return "Sophomore";
+            case JUNIOR:
+                return "Junior";
+            default:
+                return "Senior";
+        }
+    }
+    private Profile readProfile(StringTokenizer tokenizer) {
+        String firstName = tokenizer.nextToken();
+        String lastName = tokenizer.nextToken();
+        String dobToken = tokenizer.nextToken();
+        Date dob = new Date(dobToken);
+        return new Profile(firstName, lastName, dob);
+    }
+    private Student getStudentOrPrint(Profile profile) {
+        Student key = makeStudentKey(profile);
+        if (!studentList.contains(key)) {
+            printLine("INVALID: [" + profile + "] does not exist.");
+            return null;
+        }
+        return studentList.get(key);
+    }
+    private Section getSectionOrPrint(Course course, Time time) {
+        Section key = makeSectionLookupKey(course, time);
+        Section section = schedule.getSection(key);
+        if (section == null) {
+            printLine("INVALID: " + course.getNumber() + " " + time + " does not exist.");
+            return null;
+        }
+        return section;
+    }
+    private boolean meetsStandingPrereq(Student student, Course course, Profile profile) {
+        if (student.getStandingEnum().ordinal() < course.getStanding().ordinal()) {
+            printLine("Prereq: " + standingPretty(course.getStanding()) + " - ["
+                    + profile + "] [" + standingPretty(student.getStandingEnum()) + "]");
+            return false;
+        }
+        return true;
+    }
+    private boolean meetsMajorPrereq(Student student, Course course, Profile profile) {
+        if (course.getMajorRestriction() != null && student.getMajor() != course.getMajorRestriction()) {
+            System.out.println("Prereq: major only - [" + profile + "] [" + student.getMajor() + "]");
+            return false;
+        }
+        return true;
+    }
+    private boolean exceedsCreditLimit(Student student, Course course) {
+        int currentlyEnrolled = schedule.creditsEnrolled(student);
+        int afterEnroll = currentlyEnrolled + course.getCredits();
+        return afterEnroll > CREDIT_LIMIT;
     }
 
 }
