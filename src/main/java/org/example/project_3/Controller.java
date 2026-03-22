@@ -87,6 +87,10 @@ public class Controller {
     private ComboBox<String> enrollStudentBox;
     @FXML
     private ComboBox<String> dropStudentBox;
+    @FXML
+    private TextField majorField;
+    @FXML
+    private TextField scholarshipField;
 
 
     @FXML
@@ -579,6 +583,64 @@ public class Controller {
         } catch (java.io.FileNotFoundException e) {
             printLine("File not found.");
         }
+    }
+
+
+    @FXML
+    private void handleScholarshipFX() {
+        // Clear previous messages
+        outputArea.clear();
+
+        // Build a profile string tokenizer from text fields
+        String profileInput = firstNameField.getText().trim() + " " +
+                lastNameField.getText().trim() + " " +
+                majorField.getText().trim();
+
+        StringTokenizer tokenizer = new StringTokenizer(profileInput);
+        if (tokenizer.countTokens() < 3) {
+            outputArea.setText("ERROR: Missing profile data (first, last, major).");
+            return;
+        }
+
+        Profile profile = readProfile(tokenizer);
+        Student student = getStudentOrPrint(profile);
+        if (student == null) {
+            outputArea.setText("ERROR: Student not found: " + profile);
+            return;
+        }
+
+        // Parse scholarship amount
+        String amountInput = scholarshipField.getText().trim();
+        int amount;
+        try {
+            amount = Integer.parseInt(amountInput);
+        } catch (NumberFormatException e) {
+            outputArea.setText("ERROR: Scholarship amount must be an integer.");
+            return;
+        }
+
+        if (amount <= 0 || amount > 10000) {
+            outputArea.setText("ERROR: Scholarship must be 1 to 10,000.");
+            return;
+        }
+
+        if (!(student instanceof Resident)) {
+            outputArea.setText("ERROR: " + profile + " is a non-resident and not eligible.");
+            return;
+        }
+
+        int enrolledCredits = schedule.creditsEnrolled(student);
+        if (enrolledCredits < 12) {
+            outputArea.setText("ERROR: " + profile + " enrolled less than 12 credits.");
+            return;
+        }
+
+        // Update scholarship
+        Resident resident = (Resident) student;
+        resident.setScholarship(amount);
+
+        outputArea.setText("SUCCESS: Scholarship $" + String.format("%,d", amount) +
+                " updated for " + profile);
     }
 
     //Helper Methods
