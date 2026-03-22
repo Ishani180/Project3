@@ -2,6 +2,7 @@ package org.example.project_3;
 import javafx.scene.control.*;
 import project2.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import util.Date;
 
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ public class Controller {
     @FXML private TextField periodField;
     @FXML private TextField instructorField;
     @FXML private TextField classroomField;
+    @FXML private TextField timeField;
 
     @FXML
     private void updateExtraFields(){
@@ -321,6 +323,66 @@ public class Controller {
         schedule.add(section);
         outputArea.setText(section + " added to the schedule.");
     }
+
+
+    @FXML
+    private void handleCloseSectionButton() {
+        String courseInput = courseField.getText().trim();
+        String timeInput = timeField.getText().trim();
+
+        if (courseInput.isEmpty() || timeInput.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Missing Data", "Please enter both course and time.");
+            return;
+        }
+
+        Course course = parseCourseOrPrint(courseInput);
+        if (course == null) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Course", "The course code entered is invalid.");
+            return;
+        }
+
+        Time time = parseTimeOrPrint(timeInput);
+        if (time == null) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Time", "The time format entered is invalid.");
+            return;
+        }
+
+        Section lookupKey = makeSectionLookupKey(course, time);
+        Section existing = schedule.getSection(lookupKey);
+
+        if (existing == null) {
+            showAlert(Alert.AlertType.INFORMATION, "Section Not Found",
+                    course.getNumber() + " " + time + " does not exist.");
+            return;
+        }
+
+        if (existing.getNumStudents() > 0) {
+            showAlert(Alert.AlertType.WARNING, "Cannot Remove Section",
+                    course.getNumber() + " " + time + " cannot be removed ["
+                            + existing.getNumStudents() + " student(s) enrolled].");
+            return;
+        }
+
+        schedule.remove(lookupKey);
+        showAlert(Alert.AlertType.INFORMATION, "Section Removed",
+                course.getNumber() + " " + time + " removed successfully.");
+
+    }
+
+    //Helper Methods
+
+    private Section makeSectionLookupKey(Course course, Time time) {
+        return new Section(course, time, Instructor.PATEL, Classroom.HIL114);
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     private Course parseCourse(String token) {
         try {
             return Course.valueOf(token.toUpperCase());
