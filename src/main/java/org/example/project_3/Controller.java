@@ -53,6 +53,21 @@ public class Controller {
     @FXML private TextField instructorField;
     @FXML private TextField classroomField;
     @FXML private TextField timeField;
+    @FXML
+    private TextField dropFirstNameField;
+
+    @FXML
+    private TextField dropLastNameField;
+
+    @FXML
+    private TextField dropDobField;
+
+    @FXML
+    private ComboBox<String> dropCourseBox;
+
+    @FXML
+    private ComboBox<String> dropTimeBox;
+
 
     @FXML
     private void updateExtraFields(){
@@ -438,7 +453,41 @@ public class Controller {
         schedule.enroll(makeSectionLookupKey(course, time), student);
         printLine("[" + profile + "] added to " + course.getNumber() + " " + time);
     }
-
+    @FXML
+    private void handleDrop(ActionEvent event) {
+        String firstName = dropFirstNameField.getText().trim();
+        String lastName = dropLastNameField.getText().trim();
+        String dobText = dropDobField.getText().trim();
+        if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()
+                || dropCourseBox.getValue() == null || dropTimeBox.getValue() == null) {
+            outputArea.appendText("Missing data in command line.\n");
+            return;
+        }
+        Date dob = new Date(dobText);
+        Profile profile = new Profile(firstName, lastName, dob);
+        Student student = getStudentOrPrint(profile);
+        if (student == null) {
+            return;
+        }
+        Course course = parseCourseOrPrint(dropCourseBox.getValue());
+        if (course == null) {
+            return;
+        }
+        Time time = parseTimeOrPrint(dropTimeBox.getValue());
+        if (time == null) {
+            return;
+        }
+        Section section = getSectionOrPrint(course, time);
+        if (section == null) {
+            return;
+        }
+        if (!section.contains(student)) {
+            outputArea.appendText("[" + profile + "] is not enrolled in this section.\n");
+            return;
+        }
+        schedule.drop(makeSectionLookupKey(course, time), student);
+        outputArea.appendText("[" + profile + "] dropped from " + course.getNumber() + " " + time + "\n");
+    }
 
     //Helper Methods
 
