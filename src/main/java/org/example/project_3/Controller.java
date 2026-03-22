@@ -438,6 +438,8 @@ public class Controller {
         schedule.enroll(makeSectionLookupKey(course, time), student);
         printLine("[" + profile + "] added to " + course.getNumber() + " " + time);
     }
+
+
     //Helper Methods
 
     private Section makeSectionLookupKey(Course course, Time time) {
