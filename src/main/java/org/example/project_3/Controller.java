@@ -48,11 +48,16 @@ public class Controller {
     private CheckBox studyAbroadCheckBox;
     @FXML
     private TextArea outputArea;
-    @FXML private TextField courseField;
-    @FXML private TextField periodField;
-    @FXML private TextField instructorField;
-    @FXML private TextField classroomField;
-    @FXML private TextField timeField;
+    @FXML
+    private ComboBox<String> courseBox;
+    @FXML
+    private ComboBox<String> periodBox;
+    @FXML
+    private ComboBox<String> instructorBox;
+    @FXML
+    private ComboBox<String> classroomBox;
+    @FXML
+    private TextField timeField;
     @FXML
     private TextField dropFirstNameField;
 
@@ -296,104 +301,85 @@ public class Controller {
     }
     @FXML
     private void handleOpenSection() {
-        if (courseField.getText().isEmpty() ||
-                periodField.getText().isEmpty() ||
-                instructorField.getText().isEmpty() ||
-                classroomField.getText().isEmpty()) {
-            outputArea.setText("Missing data in command line.");
+        String courseText = courseBox.getValue();
+        String periodText = periodBox.getValue();
+        String classroomText = classroomBox.getValue();
+        String instructorText = instructorBox.getValue();
+        if (courseText == null || periodText == null || classroomText == null || instructorText == null) {
+            printLine("Missing data in command line.");
             return;
         }
-        Course course = parseCourseOrPrint(courseField.getText());
+        Course course = parseCourseOrPrint(courseText);
         if (course == null) {
-            outputArea.setText("INVALID: course name does not exist.");
             return;
         }
-        Time time = parseTimeOrPrint(periodField.getText());
+        Time time = parseTimeOrPrint(periodText);
         if (time == null) {
-            outputArea.setText("INVALID: period does not exist.");
             return;
         }
-        Instructor instructor = parseInstructorOrPrint(instructorField.getText());
-        if (instructor == null) {
-            outputArea.setText("INVALID: instructor does not exist.");
-            return;
-        }
-        Classroom classroom = parseClassroomOrPrint(classroomField.getText());
+        Classroom classroom = parseClassroomOrPrint(classroomText);
         if (classroom == null) {
-            outputArea.setText("INVALID: classroom does not exist.");
+            return;
+        }
+        Instructor instructor = parseInstructorOrPrint(instructorText);
+        if (instructor == null) {
             return;
         }
         Section section = new Section(course, time, instructor, classroom);
         if (schedule.contains(section)) {
-            outputArea.setText("INVALID: " + course.getNumber() +
-                    " period " + periodOf(time) + " already exists.");
+            printLine(course.getNumber() + " " + time + " already exists.");
             return;
         }
         if (!schedule.isInstructorAvailable(time, instructor)) {
-            outputArea.setText("INVALID: " + instructor + " time conflict.");
+            printLine(instructor + " is not available at " + time + ".");
             return;
         }
         if (!schedule.isClassroomAvailable(time, classroom)) {
-            outputArea.setText("INVALID: [" + classroom + "] not available.");
+            printLine(classroom + " is not available at " + time + ".");
             return;
         }
         schedule.add(section);
-        outputArea.setText(section + " added to the schedule.");
+        printLine(course.getNumber() + " " + time + " added.");
     }
-
-
     @FXML
     private void handleCloseSectionButton() {
-        String courseInput = courseField.getText().trim();
-        String timeInput = timeField.getText().trim();
-
-        if (courseInput.isEmpty() || timeInput.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Missing Data", "Please enter both course and time.");
+        String courseText = courseBox.getValue();
+        String periodText = periodBox.getValue();
+        if (courseText == null || periodText == null) {
+            printLine("Missing data in command line.");
             return;
         }
-
-        Course course = parseCourseOrPrint(courseInput);
+        Course course = parseCourseOrPrint(courseText);
         if (course == null) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Course", "The course code entered is invalid.");
             return;
         }
-
-        Time time = parseTimeOrPrint(timeInput);
+        Time time = parseTimeOrPrint(periodText);
         if (time == null) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Time", "The time format entered is invalid.");
             return;
         }
-
         Section lookupKey = makeSectionLookupKey(course, time);
         Section existing = schedule.getSection(lookupKey);
-
         if (existing == null) {
-            showAlert(Alert.AlertType.INFORMATION, "Section Not Found",
-                    course.getNumber() + " " + time + " does not exist.");
+            printLine(course.getNumber() + " " + time + " does not exist.");
             return;
         }
-
         if (existing.getNumStudents() > 0) {
-            showAlert(Alert.AlertType.WARNING, "Cannot Remove Section",
-                    course.getNumber() + " " + time + " cannot be removed ["
-                            + existing.getNumStudents() + " student(s) enrolled].");
+            printLine(course.getNumber() + " " + time + " cannot be removed ["
+                    + existing.getNumStudents() + " student(s) enrolled]");
             return;
         }
-
         schedule.remove(lookupKey);
-        showAlert(Alert.AlertType.INFORMATION, "Section Removed",
-                course.getNumber() + " " + time + " removed successfully.");
-
+        printLine(course.getNumber() + " " + time + " removed.");
     }
     @FXML
     private void handleEnroll(ActionEvent event) {
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
         String dobText = dobField.getText().trim();
-        String courseText = courseField.getText().trim();
-        String timeText = timeField.getText().trim();
+        String courseText = courseBox.getValue();
+        String periodText = periodBox.getValue();
         if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()
-                || courseText.isEmpty() || timeText.isEmpty()) {
+                || courseText == null || periodText == null) {
             printLine("Missing data in command line.");
             return;
         }
@@ -407,7 +393,7 @@ public class Controller {
         if (course == null) {
             return;
         }
-        Time time = parseTimeOrPrint(timeText);
+        Time time = parseTimeOrPrint(periodText);
         if (time == null) {
             return;
         }
@@ -425,7 +411,6 @@ public class Controller {
         if (!meetsMajorPrereq(student, course, profile)) {
             return;
         }
-
         if (schedule.hasTimeConflict(student, time)) {
             printLine("Time conflict: [" + profile + "] enrolled in another class at period " + periodOf(time));
             return;
@@ -458,9 +443,11 @@ public class Controller {
         String firstName = dropFirstNameField.getText().trim();
         String lastName = dropLastNameField.getText().trim();
         String dobText = dropDobField.getText().trim();
+        String courseText = dropCourseBox.getValue();
+        String periodText = dropTimeBox.getValue();
         if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()
-                || dropCourseBox.getValue() == null || dropTimeBox.getValue() == null) {
-            outputArea.appendText("Missing data in command line.\n");
+                || courseText == null || periodText == null) {
+            printLine("Missing data in command line.");
             return;
         }
         Date dob = new Date(dobText);
@@ -469,11 +456,11 @@ public class Controller {
         if (student == null) {
             return;
         }
-        Course course = parseCourseOrPrint(dropCourseBox.getValue());
+        Course course = parseCourseOrPrint(courseText);
         if (course == null) {
             return;
         }
-        Time time = parseTimeOrPrint(dropTimeBox.getValue());
+        Time time = parseTimeOrPrint(periodText);
         if (time == null) {
             return;
         }
@@ -482,11 +469,11 @@ public class Controller {
             return;
         }
         if (!section.contains(student)) {
-            outputArea.appendText("[" + profile + "] is not enrolled in this section.\n");
+            printLine("[" + profile + "] is not enrolled in this section.");
             return;
         }
         schedule.drop(makeSectionLookupKey(course, time), student);
-        outputArea.appendText("[" + profile + "] dropped from " + course.getNumber() + " " + time + "\n");
+        printLine("[" + profile + "] dropped from " + course.getNumber() + " " + time);
     }
 
     //Helper Methods
