@@ -124,6 +124,14 @@ public class Controller {
         instructorBox.setPromptText("select an instructor");
         periodBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
         periodBox.setPromptText("select a time");
+        enrollCourseBox.getItems().addAll("CS100","CS200","CS300","CS400","CS442","PHY100", "PHY200","ECE300","ECE400","CCD", "HST");
+        enrollCourseBox.setPromptText("select a course");
+        enrollPeriodBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
+        enrollPeriodBox.setPromptText("select a time");
+        dropCourseBox.getItems().addAll("CS100","CS200","CS300","CS400","CS442","PHY100", "PHY200","ECE300","ECE400","CCD", "HST");
+        dropCourseBox.setPromptText("select a course");
+        dropTimeBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
+        dropTimeBox.setPromptText("select a time");
     }
     private void printLine(String text) {
         outputArea.appendText(text + "\n");
