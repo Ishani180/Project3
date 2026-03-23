@@ -94,10 +94,6 @@
                                 <Label text="Classroom:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
                                 <ComboBox fx:id="classroomBox" prefWidth="220"
                                           GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-
-                                <Label text="Time:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                                <TextField fx:id="timeField" editable="false"
-                                           GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                             </GridPane>
 
                             <HBox spacing="10">
