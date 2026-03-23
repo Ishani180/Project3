@@ -231,7 +231,23 @@
                         </AnchorPane>
                     </content>
                 </Tab>
+                <Tab text="Print">
+                    <content>
+                        <VBox spacing="15" alignment="CENTER">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20"/>
+                            </padding>
 
+                            <Button text="Print Tuition Report"
+                                    prefWidth="200"
+                                    onAction="#handleTuitionReportFX"/>
+
+                            <Button text="Print Graduation Report"
+                                    prefWidth="200"
+                                    onAction="#handleGraduationReportFX"/>
+                        </VBox>
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
     </center>

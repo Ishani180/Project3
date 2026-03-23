@@ -641,7 +641,90 @@ public class Controller {
         outputArea.setText("SUCCESS: Scholarship $" + String.format("%,d", amount) +
                 " updated for " + profile);
     }
+    @FXML
+    private void handleTuitionReportFX() {
+        outputArea.clear();
 
+        if (schedule.isEmpty()) {
+            outputArea.appendText("Schedule is empty!\n");
+            return;
+        }
+
+        outputArea.appendText("* Tuition dues ordered by student. *\n");
+
+        util.List<Student> students = new util.List<>();
+        for (Student s : studentList) {
+            students.add(s);
+        }
+        util.Sort.sort(students);
+
+        for (Student student : students) {
+            int credits = schedule.creditsEnrolled(student);
+
+            outputArea.appendText("[" + student.getProfile() + "]" + studentTypeString(student) + "\n");
+
+            if (credits == 0) {
+                outputArea.appendText("\t\t**not enrolled.\n");
+                continue;
+            }
+
+            util.List<Section> enrolled = new util.List<>();
+            for (Section sec : schedule) {
+                if (sec.contains(student)) {
+                    enrolled.add(sec);
+                }
+            }
+
+            util.Sort.sortSectionsByCourse(enrolled);
+
+            for (Section sec : enrolled) {
+                outputArea.appendText("\t\t"
+                        + sec.getCourse().name()
+                        + "[" + sec.getTime() + "] "
+                        + "[credit: " + sec.getCourse().getCredits() + "]\n");
+            }
+
+            if (student instanceof International && credits < 12) {
+                outputArea.appendText("\t\t**International student must enroll at least 12 credits.\n");
+                continue;
+            }
+
+            double tuition = student.tuition(credits);
+            outputArea.appendText("\t\t**Total credits enrolled: " + credits
+                    + " [tuition due: $" + String.format("%,.2f", tuition) + "]\n");
+        }
+
+        outputArea.appendText("* end of list *\n");
+    }
+    @FXML
+    private void handleGraduationReportFX() {
+        outputArea.clear();
+
+        if (schedule.isEmpty()) {
+            outputArea.appendText("Schedule is empty!\n");
+            return;
+        }
+
+        outputArea.appendText("* List of students eligible for graduation, ordered by major *\n");
+
+        util.List<Student> copy = new util.List<>();
+        for (Student s : studentList) {
+            copy.add(s);
+        }
+
+        sortStudentsByMajorThenProfile(copy);
+
+        for (Student student : copy) {
+            int totalCredits = student.getCreditsCompleted() + schedule.creditsEnrolled(student);
+
+            if (totalCredits >= 120) {
+                outputArea.appendText("[" + student.getProfile() + "]["
+                        + student.getMajor() + "," + student.getMajor().getSchool() + "]\n");
+            }
+        }
+
+        outputArea.appendText("* end of list *\n");
+    }
     //Helper Methods
 
     private Section makeSectionLookupKey(Course course, Time time) {
@@ -795,6 +878,45 @@ public class Controller {
                 String display = s.getProfile().toString();
                 enrollStudentBox.getItems().add(display);
                 dropStudentBox.getItems().add(display);
+            }
+        }
+    }
+    private String studentTypeString(Student student) {
+
+        if (student instanceof Resident) {
+            return "[Resident]";
+        }
+        if (student instanceof TriState) {
+            TriState ts = (TriState) student;
+            return "[Tristate: " + ts.getState() + "]";
+        }
+        if (student instanceof International) {
+            International intl = (International) student;
+            return intl.isStudyAbroad() ? "[International study abroad]" : "[International]";
+        }
+        if (student instanceof NonResident) {
+            return "[Noresident]";
+        }
+        return "";
+    }
+    private void sortStudentsByMajorThenProfile(util.List<Student> list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < list.size(); j++) {
+
+                Student a = list.get(j);
+                Student b = list.get(minIndex);
+
+                int majorCompare = a.getMajor().compareTo(b.getMajor());
+                if (majorCompare < 0 ||
+                        (majorCompare == 0 && a.compareTo(b) < 0)) {
+                    minIndex = j;
+                }
+            }
+            if (minIndex != i) {
+                Student temp = list.get(i);
+                list.set(i, list.get(minIndex));
+                list.set(minIndex, temp);
             }
         }
     }
