@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="my changes">
+    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="view.fxml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project_3/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project_3/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/project_3/view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/project_3/view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,12 +23,12 @@
     &quot;assignee&quot;: &quot;divena00&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Ishani180/Project3.git",
-    "accountId": "6104ae00-1b8d-4496-9489-599f9bede586"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Ishani180/Project3.git&quot;,
+    &quot;accountId&quot;: &quot;abc5dc0e-8a0e-490c-ad63-5206a8215340&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -232,15 +234,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774220870880</updated>
     </task>
-    <task id="LOCAL-00016" summary="my changes">
+    <task id="LOCAL-00016" summary="view.fxml">
       <option name="closed" value="true" />
-      <created>1774221833630</created>
+      <created>1774223005483</created>
       <option name="number" value="00016" />
       <option name="presentableId" value="LOCAL-00016" />
       <option name="project" value="LOCAL" />
-      <updated>1774221833630</updated>
+      <updated>1774223005483</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="view.fxml">
+      <option name="closed" value="true" />
+      <created>1774223181342</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1774223181342</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -250,9 +260,9 @@
     <MESSAGE value="update" />
     <MESSAGE value="handledrop" />
     <MESSAGE value="handle enroll and drop" />
-    <MESSAGE value="view.fxml" />
     <MESSAGE value="changes" />
     <MESSAGE value="my changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="my changes" />
+    <MESSAGE value="view.fxml" />
+    <option name="LAST_COMMIT_MESSAGE" value="view.fxml" />
   </component>
 </project>
