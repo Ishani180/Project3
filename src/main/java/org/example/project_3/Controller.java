@@ -61,16 +61,12 @@ public class Controller {
     private TextField timeField;
     @FXML
     private TextField dropFirstNameField;
-
     @FXML
     private TextField dropLastNameField;
-
     @FXML
     private TextField dropDobField;
-
     @FXML
     private ComboBox<String> dropCourseBox;
-
     @FXML
     private ComboBox<String> dropTimeBox;
     @FXML
@@ -120,6 +116,12 @@ public class Controller {
         internationalRadio.setToggleGroup(studentTypeGroup);
         residentRadio.setSelected(true);
         updateExtraFields();
+        courseBox.getItems().addAll("CS100","CS200","CS300","CS400","CS442","PHY100", "PHY200","ECE300","ECE400","CCD", "HST");
+        courseBox.setPromptText("select a course");
+        classroomBox.getItems().addAll("HIL114","ARC103","BEAUD","TIL232","AB2225","MU302");
+        courseBox.setPromptText("select a classroom");
+        instructorBox.getItems().addAll("PATEL", "LIM","ZIMNES", "HARPER","KAUR","TAYLOR","RAMESH","CERAVOLO","BROWN");
+        instructorBox.setPromptText("select an instructor");
     }
     private void printLine(String text) {
         outputArea.appendText(text + "\n");
@@ -128,7 +130,6 @@ public class Controller {
         private Profile profile;
         private Major major;
         private int creditsCompleted;
-
         public ParsedStudent(Profile profile, Major major, int creditsCompleted) {
             this.profile = profile;
             this.major = major;
