@@ -48,6 +48,10 @@ public class Date implements Comparable<Date> {
      * Default constructor.
      */
     public Date() {
+        Calendar cal = Calendar.getInstance();
+        this.year = cal.get(Calendar.YEAR);
+        this.month = cal.get(Calendar.MONTH) + 1;
+        this.day = cal.get(Calendar.DAY_OF_MONTH);
     }
 
     /**
