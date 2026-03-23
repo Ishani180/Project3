@@ -119,7 +119,7 @@ public class Controller {
         courseBox.getItems().addAll("CS100","CS200","CS300","CS400","CS442","PHY100", "PHY200","ECE300","ECE400","CCD", "HST");
         courseBox.setPromptText("select a course");
         classroomBox.getItems().addAll("HIL114","ARC103","BEAUD","TIL232","AB2225","MU302");
-        courseBox.setPromptText("select a classroom");
+        classroomBox.setPromptText("select a classroom");
         instructorBox.getItems().addAll("PATEL", "LIM","ZIMNES", "HARPER","KAUR","TAYLOR","RAMESH","CERAVOLO","BROWN");
         instructorBox.setPromptText("select an instructor");
         periodBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
