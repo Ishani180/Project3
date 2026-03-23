@@ -122,6 +122,8 @@ public class Controller {
         courseBox.setPromptText("select a classroom");
         instructorBox.getItems().addAll("PATEL", "LIM","ZIMNES", "HARPER","KAUR","TAYLOR","RAMESH","CERAVOLO","BROWN");
         instructorBox.setPromptText("select an instructor");
+        periodBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
+        periodBox.setPromptText("select a time");
     }
     private void printLine(String text) {
         outputArea.appendText(text + "\n");
@@ -645,93 +647,72 @@ public class Controller {
     @FXML
     private void handleTuitionReportFX() {
         outputArea.clear();
-
         if (schedule.isEmpty()) {
             outputArea.appendText("Schedule is empty!\n");
             return;
         }
-
         outputArea.appendText("* Tuition dues ordered by student. *\n");
-
         util.List<Student> students = new util.List<>();
         for (Student s : studentList) {
             students.add(s);
         }
         util.Sort.sort(students);
-
         for (Student student : students) {
             int credits = schedule.creditsEnrolled(student);
-
             outputArea.appendText("[" + student.getProfile() + "]" + studentTypeString(student) + "\n");
-
             if (credits == 0) {
                 outputArea.appendText("\t\t**not enrolled.\n");
                 continue;
             }
-
             util.List<Section> enrolled = new util.List<>();
             for (Section sec : schedule) {
                 if (sec.contains(student)) {
                     enrolled.add(sec);
                 }
             }
-
             util.Sort.sortSectionsByCourse(enrolled);
-
             for (Section sec : enrolled) {
                 outputArea.appendText("\t\t"
                         + sec.getCourse().name()
                         + "[" + sec.getTime() + "] "
                         + "[credit: " + sec.getCourse().getCredits() + "]\n");
             }
-
             if (student instanceof International && credits < 12) {
                 outputArea.appendText("\t\t**International student must enroll at least 12 credits.\n");
                 continue;
             }
-
             double tuition = student.tuition(credits);
             outputArea.appendText("\t\t**Total credits enrolled: " + credits
                     + " [tuition due: $" + String.format("%,.2f", tuition) + "]\n");
         }
-
         outputArea.appendText("* end of list *\n");
     }
     @FXML
     private void handleGraduationReportFX() {
         outputArea.clear();
-
         if (schedule.isEmpty()) {
             outputArea.appendText("Schedule is empty!\n");
             return;
         }
-
         outputArea.appendText("* List of students eligible for graduation, ordered by major *\n");
-
         util.List<Student> copy = new util.List<>();
         for (Student s : studentList) {
             copy.add(s);
         }
-
         sortStudentsByMajorThenProfile(copy);
-
         for (Student student : copy) {
             int totalCredits = student.getCreditsCompleted() + schedule.creditsEnrolled(student);
-
             if (totalCredits >= 120) {
                 outputArea.appendText("[" + student.getProfile() + "]["
                         + student.getMajor() + "," + student.getMajor().getSchool() + "]\n");
             }
         }
-
         outputArea.appendText("* end of list *\n");
     }
     //Helper Methods
-
     private Section makeSectionLookupKey(Course course, Time time) {
         return new Section(course, time, Instructor.PATEL, Classroom.HIL114);
     }
-
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -739,7 +720,6 @@ public class Controller {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
     private Course parseCourse(String token) {
         try {
             return Course.valueOf(token.toUpperCase());
