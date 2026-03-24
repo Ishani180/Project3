@@ -93,6 +93,10 @@ public class Controller {
     private ComboBox<String> dropCourseBox;
     @FXML
     private ComboBox<String> dropPeriodBox;
+
+    /**
+     * checks and updates buttons
+     */
     @FXML
     private void updateExtraFields(){
         boolean isTriState = triStateRadio.isSelected();
@@ -106,6 +110,10 @@ public class Controller {
             studyAbroadCheckBox.setSelected(false);
         }
     }
+
+    /**
+     * fills in boxes and sets toggles
+     */
     public void initialize(){
         studentTypeGroup = new ToggleGroup();
         majorBox.getItems().addAll("CS","MATH","ITI","BAIT","ECE");
@@ -134,6 +142,10 @@ public class Controller {
     private void printLine(String text) {
         outputArea.appendText(text + "\n");
     }
+
+    /**
+     * parses student, goes through profile
+     */
     private class ParsedStudent {
         private Profile profile;
         private Major major;
@@ -153,6 +165,11 @@ public class Controller {
             return creditsCompleted;
         }
     }
+
+    /**
+     *
+     * sets fields and stores data
+     */
     private ParsedStudent parseStudentFromFields(){
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
@@ -194,6 +211,11 @@ public class Controller {
         return new ParsedStudent(profile, major, creditsCompleted);
 
     }
+
+    /**
+     * Method to add students to studentlist
+     * Occurs when student add button is pressed in GUI
+     */
     @FXML
     private void handleAddStudent(){
         ParsedStudent baseStudent = parseStudentFromFields();
@@ -303,6 +325,11 @@ public class Controller {
         }
         return null;
     }
+
+    /**
+     * Method to remove student from studentlist
+     * Occurs when remove button is pressed in GUI
+     */
     @FXML
     private void handleRemove(){
         String firstName = firstNameField.getText().trim();
@@ -331,6 +358,11 @@ public class Controller {
         printLine("[" + profile + "] removed from the list.");
 
     }
+
+    /**
+     * Method that opens section when selected
+     * Open button pressed through GUI
+     */
     @FXML
     private void handleOpenSection() {
         String courseText = courseBox.getValue();
@@ -373,6 +405,10 @@ public class Controller {
         schedule.add(section);
         printLine(course.getNumber() + " " + time + " added.");
     }
+    /**
+     * Method that closes section when selected
+     * close button pressed through GUI
+     */
     @FXML
     private void handleCloseSectionButton() {
         String courseText = courseBox.getValue();
@@ -403,6 +439,11 @@ public class Controller {
         schedule.remove(lookupKey);
         printLine(course.getNumber() + " " + time + " removed.");
     }
+
+    /**
+     * Enrolls student to a course by selecting period and course
+     * @param event
+     */
     @FXML
     private void handleEnroll(ActionEvent event) {
         String firstName = enrollFirstNameField.getText().trim();
@@ -470,6 +511,10 @@ public class Controller {
         schedule.enroll(makeSectionLookupKey(course, time), student);
         printLine("[" + profile + "] added to " + course.getNumber() + " " + time);
     }
+    /**
+     * Drops student from course by selecting drop button
+     * @param event
+     */
     @FXML
     private void handleDrop(ActionEvent event) {
         String firstName = dropFirstNameField.getText().trim();
@@ -490,6 +535,10 @@ public class Controller {
         printLine("[" + profile + "] removed from the list.");
         populateStudentBoxes();
     }
+
+    /**
+     * Loads student from student.txt file onto GUI
+     */
     @FXML
     private void handleLoad() {
         java.io.File file = new java.io.File("students.txt");
@@ -600,6 +649,10 @@ public class Controller {
             printLine("File not found.");
         }
     }
+
+    /**
+     * Applies Scholarship to student
+     */
     @FXML
     private void handleScholarshipFX() {
         outputArea.clear();
@@ -652,6 +705,10 @@ public class Controller {
         outputArea.setText("SUCCESS: Scholarship $" + String.format("%,d", amount) +
                 " updated for " + profile);
     }
+
+    /**
+     * deals with tuition cost for each student
+     */
     @FXML
     private void handleTuitionReportFX() {
         outputArea.clear();
@@ -695,6 +752,9 @@ public class Controller {
         }
         outputArea.appendText("* end of list *\n");
     }
+    /**
+     * Make sure students have enough credits to graudate with
+     */
     @FXML
     private void handleGraduationReportFX() {
         outputArea.clear();
