@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="my changes">
+    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project_3/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project_3/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/project_3/view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/project_3/view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -281,15 +283,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774308135176</updated>
     </task>
-    <task id="LOCAL-00022" summary="my changes">
+    <task id="LOCAL-00022" summary="remove time field">
       <option name="closed" value="true" />
-      <created>1774309160698</created>
+      <created>1774308490002</created>
       <option name="number" value="00022" />
       <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1774309160698</updated>
+      <updated>1774308490002</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="changes">
+      <option name="closed" value="true" />
+      <created>1774309187941</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1774309187941</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -299,10 +309,11 @@
     <MESSAGE value="update" />
     <MESSAGE value="handledrop" />
     <MESSAGE value="handle enroll and drop" />
+    <MESSAGE value="my changes" />
     <MESSAGE value="view.fxml" />
     <MESSAGE value="combo box selection added" />
+    <MESSAGE value="remove time field" />
     <MESSAGE value="changes" />
-    <MESSAGE value="my changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="my changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes" />
   </component>
 </project>
