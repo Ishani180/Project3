@@ -154,10 +154,16 @@
                         <Label text="Enroll / Drop Students"
                                style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 
-                        <VBox spacing="4">
-                            <Label text="Student List"/>
-                            <ComboBox fx:id="studentListBox" prefWidth="320" promptText="StudentList"/>
-                        </VBox>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <VBox spacing="4">
+                                <Label text="Student List"/>
+                                <ComboBox fx:id="studentListBox" prefWidth="320" promptText="Loaded students"/>
+                            </VBox>
+                            <VBox spacing="4">
+                                <Label text=""/>
+                                <Button text="Load Students" onAction="#handleLoad"/>
+                            </VBox>
+                        </HBox>
 
                         <Separator/>
 
@@ -213,17 +219,6 @@
                             <VBox spacing="4">
                                 <Label text="Date of Birth"/>
                                 <TextField fx:id="dropDobField" promptText="mm/dd/yyyy"/>
-                            </VBox>
-                        </HBox>
-
-                        <HBox spacing="10">
-                            <VBox spacing="4">
-                                <Label text="Course"/>
-                                <ComboBox fx:id="dropCourseBox" prefWidth="150"/>
-                            </VBox>
-                            <VBox spacing="4">
-                                <Label text="Period"/>
-                                <ComboBox fx:id="dropPeriodBox" prefWidth="150"/>
                             </VBox>
                         </HBox>
 

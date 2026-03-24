@@ -126,6 +126,10 @@ public class Controller {
         periodBox.setPromptText("select a time");
         studentListBox.setPromptText("StudentList");
         studentListBox.setOnAction(event -> fillSelectedStudent());
+        enrollCourseBox.getItems().addAll("CS100","CS200","CS300","CS400","CS442","PHY100", "PHY200","ECE300","ECE400","CCD", "HST");
+        enrollCourseBox.setPromptText("select a course");
+        enrollPeriodBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
+        enrollPeriodBox.setPromptText("select a time");
     }
     private void printLine(String text) {
         outputArea.appendText(text + "\n");
@@ -471,37 +475,20 @@ public class Controller {
         String firstName = dropFirstNameField.getText().trim();
         String lastName = dropLastNameField.getText().trim();
         String dobText = dropDobField.getText().trim();
-        String courseText = dropCourseBox.getValue();
-        String periodText = dropPeriodBox.getValue();
-        if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()
-                || courseText == null || periodText == null) {
+        if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()) {
             printLine("Missing data in command line.");
             return;
         }
         Date dob = new Date(dobText);
         Profile profile = new Profile(firstName, lastName, dob);
-        Student student = getStudentOrPrint(profile);
-        if (student == null) {
+        Student key = makeStudentKey(profile);
+        if (!studentList.contains(key)) {
+            printLine("[" + profile + "] is not in the list.");
             return;
         }
-        Course course = parseCourseOrPrint(courseText);
-        if (course == null) {
-            return;
-        }
-        Time time = parseTimeOrPrint(periodText);
-        if (time == null) {
-            return;
-        }
-        Section section = getSectionOrPrint(course, time);
-        if (section == null) {
-            return;
-        }
-        if (!section.contains(student)) {
-            printLine("[" + profile + "] is not enrolled in this section.");
-            return;
-        }
-        schedule.drop(makeSectionLookupKey(course, time), student);
-        printLine("[" + profile + "] dropped from " + course.getNumber() + " " + time);
+        studentList.remove(key);
+        printLine("[" + profile + "] removed from the list.");
+        populateStudentBoxes();
     }
     @FXML
     private void handleLoad() {
