@@ -753,7 +753,7 @@ public class Controller {
         outputArea.appendText("* end of list *\n");
     }
     /**
-     * Make sure students have enough credits to graudate with
+     * Make sure students have enough credits to graduate with
      */
     @FXML
     private void handleGraduationReportFX() {
@@ -778,10 +778,13 @@ public class Controller {
         outputArea.appendText("* end of list *\n");
 
     }
-    //Helper Methods
+    //-------------------- Section Helpers --------------------
+    /** Creates a lookup Section key with default instructor/classroom. */
     private Section makeSectionLookupKey(Course course, Time time) {
         return new Section(course, time, Instructor.PATEL, Classroom.HIL114);
     }
+
+    /** Shows an alert dialog with a message. */
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -789,6 +792,7 @@ public class Controller {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    /** Parses a token into a Course. */
     private Course parseCourse(String token) {
         try {
             return Course.valueOf(token.toUpperCase());
@@ -796,6 +800,7 @@ public class Controller {
             return null;
         }
     }
+    /** Parses a token into an Instructor or prints error. */
     private Instructor parseInstructorOrPrint(String token) {
         Instructor instructor = parseInstructor(token);
         if (instructor == null) {
@@ -803,6 +808,7 @@ public class Controller {
         }
         return instructor;
     }
+    /** Parses a token into a Classroom or prints error. */
     private Classroom parseClassroomOrPrint(String token) {
         Classroom classroom = parseClassroom(token);
         if (classroom == null) {
@@ -810,6 +816,7 @@ public class Controller {
         }
         return classroom;
     }
+    /** Converts string to integer or returns null. */
     private Integer parseInt(String token) {
         try {
             return Integer.parseInt(token);
@@ -817,6 +824,7 @@ public class Controller {
             return null;
         }
     }
+    /** Parses a token into a Course or prints error. */
     private Course parseCourseOrPrint(String token) {
         Course course = parseCourse(token);
         if (course == null) {
@@ -824,6 +832,7 @@ public class Controller {
         }
         return course;
     }
+    /** Parses a token into an Instructor. */
     private Instructor parseInstructor(String token) {
         try {
             return Instructor.valueOf(token.toUpperCase());
@@ -831,6 +840,7 @@ public class Controller {
             return null;
         }
     }
+    /** Parses a token into a Classroom. */
     private Classroom parseClassroom(String token) {
         try {
             return Classroom.valueOf(token.toUpperCase());
@@ -838,6 +848,7 @@ public class Controller {
             return null;
         }
     }
+    /** Parses a string to Time or prints error if invalid. */
     private Time parseTimeOrPrint(String token) {
         if (token == null) {
             printLine("Invalid period.");
@@ -862,6 +873,7 @@ public class Controller {
                 return null;
         }
     }
+    /** Returns numeric period of a Time enum. */
     private int periodOf(Time time) {
         return Integer.parseInt(time.name().substring(1));
     }
@@ -878,6 +890,7 @@ public class Controller {
 
         return new Profile(firstName, lastName, dob);
     }
+    /** Returns standing as a readable string. */
     private String standingPretty(Standing standing) {
         switch (standing) {
             case FRESHMAN:
@@ -890,6 +903,7 @@ public class Controller {
                 return "Senior";
         }
     }
+    /** Reads a Profile from a tokenizer. */
     private Profile readProfile(StringTokenizer tokenizer) {
         String firstName = tokenizer.nextToken();
         String lastName = tokenizer.nextToken();
@@ -897,6 +911,7 @@ public class Controller {
         Date dob = new Date(dobToken);
         return new Profile(firstName, lastName, dob);
     }
+    /** Returns a Student from Profile or prints error. */
     private Student getStudentOrPrint(Profile profile) {
         Student key = makeStudentKey(profile);
         if (!studentList.contains(key)) {
@@ -905,6 +920,7 @@ public class Controller {
         }
         return studentList.get(key);
     }
+    /** Returns Section from schedule or prints error if missing. */
     private Section getSectionOrPrint(Course course, Time time) {
         Section key = makeSectionLookupKey(course, time);
         Section section = schedule.getSection(key);
@@ -914,6 +930,7 @@ public class Controller {
         }
         return section;
     }
+    /** Checks if a student meets the standing prerequisite. */
     private boolean meetsStandingPrereq(Student student, Course course, Profile profile) {
         if (student.getStandingEnum().ordinal() < course.getStanding().ordinal()) {
             printLine("Prereq: " + standingPretty(course.getStanding()) + " - ["
@@ -922,6 +939,7 @@ public class Controller {
         }
         return true;
     }
+    /** Checks if a student meets the major prerequisite. */
     private boolean meetsMajorPrereq(Student student, Course course, Profile profile) {
         if (course.getMajorRestriction() != null && student.getMajor() != course.getMajorRestriction()) {
             System.out.println("Prereq: major only - [" + profile + "] [" + student.getMajor() + "]");
@@ -929,11 +947,13 @@ public class Controller {
         }
         return true;
     }
+    /** Checks if enrolling exceeds the student's credit limit. */
     private boolean exceedsCreditLimit(Student student, Course course) {
         int currentlyEnrolled = schedule.creditsEnrolled(student);
         int afterEnroll = currentlyEnrolled + course.getCredits();
         return afterEnroll > CREDIT_LIMIT;
     }
+    /** Populates the ComboBox with students. */
     private void populateStudentBoxes() {
         studentListBox.getItems().clear();
 
@@ -946,6 +966,7 @@ public class Controller {
             }
         }
     }
+    /** Returns a string describing the type of student. */
     private String studentTypeString(Student student) {
 
         if (student instanceof Resident) {
@@ -964,6 +985,7 @@ public class Controller {
         }
         return "";
     }
+    /** Sorts students by major, then by profile. */
     private void sortStudentsByMajorThenProfile(util.List<Student> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             int minIndex = i;
@@ -985,6 +1007,7 @@ public class Controller {
             }
         }
     }
+    /** Fills enrollment fields for the selected student. */
     private void fillSelectedStudent() {
         String selected = studentListBox.getValue();
         if (selected == null || selected.isEmpty()) {
