@@ -58,17 +58,7 @@ public class Controller {
     @FXML
     private ComboBox<String> classroomBox;
     @FXML
-    private TextField timeField;
-    @FXML
-    private TextField dropFirstNameField;
-    @FXML
-    private TextField dropLastNameField;
-    @FXML
-    private TextField dropDobField;
-    @FXML
-    private ComboBox<String> dropCourseBox;
-    @FXML
-    private ComboBox<String> dropTimeBox;
+    private ComboBox<String> studentListBox;
     @FXML
     private TextField enrollFirstNameField;
     @FXML
@@ -76,13 +66,7 @@ public class Controller {
     @FXML
     private TextField enrollDobField;
     @FXML
-    private ComboBox<String> enrollCourseBox;
-    @FXML
-    private ComboBox<String> enrollPeriodBox;
-    @FXML
-    private ComboBox<String> enrollStudentBox;
-    @FXML
-    private ComboBox<String> dropStudentBox;
+    private TextField enrollCreditsField;
     @FXML
     private TextField majorField;
     @FXML
@@ -124,14 +108,7 @@ public class Controller {
         instructorBox.setPromptText("select an instructor");
         periodBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
         periodBox.setPromptText("select a time");
-        enrollCourseBox.getItems().addAll("CS100","CS200","CS300","CS400","CS442","PHY100", "PHY200","ECE300","ECE400","CCD", "HST");
-        enrollCourseBox.setPromptText("select a course");
-        enrollPeriodBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
-        enrollPeriodBox.setPromptText("select a time");
-        dropCourseBox.getItems().addAll("CS100","CS200","CS300","CS400","CS442","PHY100", "PHY200","ECE300","ECE400","CCD", "HST");
-        dropCourseBox.setPromptText("select a course");
-        dropTimeBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
-        dropTimeBox.setPromptText("select a time");
+        studentListBox.setPromptText("StudentList");
     }
     private void printLine(String text) {
         outputArea.appendText(text + "\n");
@@ -422,14 +399,14 @@ public class Controller {
         Profile profile = new Profile(first, last, dob);
         Student student = getStudentOrPrint(profile);
         if (student == null) return;
-        String courseStr = enrollCourseBox.getValue();
+        String courseStr = courseBox.getValue();
         if (courseStr == null) {
             printLine("Course not selected.");
             return;
         }
         Course course = parseCourseOrPrint(courseStr);
         if (course == null) return;
-        String periodStr = enrollPeriodBox.getValue();
+        String periodStr = periodBox.getValue();
         if (periodStr == null) {
             printLine("Period not selected.");
             return;
@@ -454,11 +431,11 @@ public class Controller {
     }
     @FXML
     private void handleDrop(ActionEvent event) {
-        String firstName = dropFirstNameField.getText().trim();
-        String lastName = dropLastNameField.getText().trim();
-        String dobText = dropDobField.getText().trim();
-        String courseText = dropCourseBox.getValue();
-        String periodText = dropTimeBox.getValue();
+        String firstName = enrollFirstNameField.getText().trim();
+        String lastName = enrollLastNameField.getText().trim();
+        String dobText = enrollDobField.getText().trim();
+        String courseText = courseBox.getValue();
+        String periodText = periodBox.getValue();
         if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()
                 || courseText == null || periodText == null) {
             printLine("Missing data in command line.");
@@ -858,15 +835,13 @@ public class Controller {
         return afterEnroll > CREDIT_LIMIT;
     }
     private void populateStudentBoxes() {
-        enrollStudentBox.getItems().clear();
-        dropStudentBox.getItems().clear();
+        studentListBox.getItems().clear();
 
         for (int i = 0; i < studentList.size(); i++) {
             Student s = studentList.get(i);
             if (s != null) {
                 String display = s.getProfile().toString();
-                enrollStudentBox.getItems().add(display);
-                dropStudentBox.getItems().add(display);
+                studentListBox.getItems().add(display);
             }
         }
     }
