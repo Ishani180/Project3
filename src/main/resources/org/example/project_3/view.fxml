@@ -228,47 +228,51 @@
                     </VBox>
                 </content>
             </Tab>
-
-            <!-- SCHOLARSHIP / REPORTS -->
-            <Tab text="Reports">
+            <Tab text="Scholarship">
                 <content>
                     <VBox spacing="12">
                         <padding>
                             <Insets top="12" right="12" bottom="12" left="12"/>
                         </padding>
 
-                        <Label text="Scholarship / Reports"
+                        <Label text="Update Scholarship"
                                style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-
-                        <Label text="Update Scholarship" style="-fx-font-weight: bold;"/>
 
                         <HBox spacing="10">
                             <VBox spacing="4">
                                 <Label text="First Name"/>
-                                <TextField fx:id="scholarshipFirstNameField" promptText="First name"/>
+                                <TextField fx:id="scholarshipFirstNameField"/>
                             </VBox>
                             <VBox spacing="4">
                                 <Label text="Last Name"/>
-                                <TextField fx:id="scholarshipLastNameField" promptText="Last name"/>
+                                <TextField fx:id="scholarshipLastNameField"/>
                             </VBox>
                             <VBox spacing="4">
                                 <Label text="Date of Birth"/>
-                                <TextField fx:id="scholarshipDobField" promptText="mm/dd/yyyy"/>
+                                <TextField fx:id="scholarshipDobField"/>
                             </VBox>
                         </HBox>
 
                         <HBox spacing="10">
                             <VBox spacing="4">
                                 <Label text="Scholarship Amount"/>
-                                <TextField fx:id="scholarshipField" promptText="Amount"/>
+                                <TextField fx:id="scholarshipField"/>
                             </VBox>
                         </HBox>
 
-                        <HBox spacing="10">
-                            <Button text="Apply Scholarship" onAction="#handleScholarshipFX"/>
-                        </HBox>
+                        <Button text="Update Scholarship" onAction="#handleScholarshipFX"/>
+                    </VBox>
+                </content>
+            </Tab>
+            <Tab text="Print">
+                <content>
+                    <VBox spacing="12">
+                        <padding>
+                            <Insets top="12" right="12" bottom="12" left="12"/>
+                        </padding>
 
-                        <Separator/>
+                        <Label text="Reports"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 
                         <HBox spacing="10">
                             <Button text="Tuition Report" onAction="#handleTuitionReportFX"/>
@@ -280,7 +284,6 @@
 
         </tabs>
     </TabPane>
-
     <VBox spacing="4">
         <Label text="Output"
                style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
