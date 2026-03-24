@@ -777,13 +777,29 @@ public class Controller {
             return null;
         }
     }
-    private Time parseTimeOrPrint(String periodToken) {
-        Integer period = parseInt(periodToken);
-        if (period == null || period < FIRST_PERIOD || period > LAST_PERIOD) {
-            printLine("INVALID: period " + periodToken + " does not exist.");
+    private Time parseTimeOrPrint(String token) {
+        if (token == null) {
+            printLine("Invalid period.");
             return null;
         }
-        return Time.valueOf("P" + period);
+
+        token = token.trim();
+
+        if (token.contains("-")) {
+            token = token.substring(0, token.indexOf("-")).trim();
+        }
+
+        switch (token) {
+            case "1": return Time.P1;
+            case "2": return Time.P2;
+            case "3": return Time.P3;
+            case "4": return Time.P4;
+            case "5": return Time.P5;
+            case "6": return Time.P6;
+            default:
+                printLine("INVALID: period " + token + " does not exist.");
+                return null;
+        }
     }
     private int periodOf(Time time) {
         return Integer.parseInt(time.name().substring(1));

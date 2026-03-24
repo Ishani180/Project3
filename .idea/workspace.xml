@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="size">
+    <list default="true" id="0961f3f1-fba7-46b7-b6e1-58a9d879c59f" name="Changes" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project_3/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project_3/Controller.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -321,13 +322,13 @@
       <option name="project" value="LOCAL" />
       <updated>1774316784033</updated>
     </task>
-    <task id="LOCAL-00027" summary="size">
+    <task id="LOCAL-00027" summary="fixed handle/drop">
       <option name="closed" value="true" />
-      <created>1774319917367</created>
+      <created>1774319641718</created>
       <option name="number" value="00027" />
       <option name="presentableId" value="LOCAL-00027" />
       <option name="project" value="LOCAL" />
-      <updated>1774319917367</updated>
+      <updated>1774319641718</updated>
     </task>
     <option name="localTasksCounter" value="28" />
     <servers />
@@ -346,7 +347,7 @@
     <MESSAGE value="changes I made" />
     <MESSAGE value="changes to handle/drop" />
     <MESSAGE value="changes" />
-    <MESSAGE value="size" />
-    <option name="LAST_COMMIT_MESSAGE" value="size" />
+    <MESSAGE value="fixed handle/drop" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed handle/drop" />
   </component>
 </project>
