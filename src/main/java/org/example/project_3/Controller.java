@@ -716,6 +716,7 @@ public class Controller {
             }
         }
         outputArea.appendText("* end of list *\n");
+
     }
     //Helper Methods
     private Section makeSectionLookupKey(Course course, Time time) {
