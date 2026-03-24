@@ -46,6 +46,17 @@ public class Profile implements Comparable<Profile> {
                 ? null
                 : new Date(profile.dob);
     }
+    public String getFirstName() {
+        return fname;
+    }
+
+    public String getLastName() {
+        return lname;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
 
     /**
      * Determines whether two Profile objects are equal.

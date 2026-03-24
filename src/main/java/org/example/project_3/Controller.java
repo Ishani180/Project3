@@ -109,6 +109,7 @@ public class Controller {
         periodBox.getItems().addAll("1 - 8:30", "2 - 10:20","3 - 12:10","4 - 14:00", "5 - 15:50", "6 - 17:40");
         periodBox.setPromptText("select a time");
         studentListBox.setPromptText("StudentList");
+        studentListBox.setOnAction(event -> fillSelectedStudent());
     }
     private void printLine(String text) {
         outputArea.appendText(text + "\n");
@@ -387,8 +388,52 @@ public class Controller {
         String first = enrollFirstNameField.getText().trim();
         String last = enrollLastNameField.getText().trim();
         String dobText = enrollDobField.getText().trim();
-        if (first.isEmpty() || last.isEmpty() || dobText.isEmpty()) {
+        String creditsText = enrollCreditsField.getText().trim();
+
+        if (first.isEmpty() || last.isEmpty() || dobText.isEmpty() || creditsText.isEmpty()) {
             printLine("Missing data in input fields.");
+            return;
+        }
+
+        Date dob = new Date(dobText);
+        if (!dob.isValid()) {
+            printLine("Invalid date of birth.");
+            return;
+        }
+
+        int credits;
+        try {
+            credits = Integer.parseInt(creditsText);
+        } catch (NumberFormatException e) {
+            printLine("Invalid data tokens.");
+            return;
+        }
+
+        if (credits < 0) {
+            printLine("Invalid data tokens.");
+            return;
+        }
+
+        Profile profile = new Profile(first, last, dob);
+
+        if (studentList.contains(makeStudentKey(profile))) {
+            printLine("[" + profile + "] student is already in the list.");
+            return;
+        }
+
+        Student student = new Resident(profile, Major.CS, credits, 0);
+        studentList.add(student);
+        populateStudentBoxes();
+
+        printLine("[" + profile + "][Resident] added to the list.");
+    }
+    @FXML
+    private void handleDrop(ActionEvent event) {
+        String firstName = enrollFirstNameField.getText().trim();
+        String lastName = enrollLastNameField.getText().trim();
+        String dobText = enrollDobField.getText().trim();
+        if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()) {
+            printLine("Missing data in command line.");
             return;
         }
         Date dob = new Date(dobText);
@@ -396,75 +441,31 @@ public class Controller {
             printLine("Invalid date of birth.");
             return;
         }
-        Profile profile = new Profile(first, last, dob);
-        Student student = getStudentOrPrint(profile);
-        if (student == null) return;
-        String courseStr = courseBox.getValue();
-        if (courseStr == null) {
-            printLine("Course not selected.");
-            return;
-        }
-        Course course = parseCourseOrPrint(courseStr);
-        if (course == null) return;
-        String periodStr = periodBox.getValue();
-        if (periodStr == null) {
-            printLine("Period not selected.");
-            return;
-        }
-        Time time = parseTimeOrPrint(periodStr);
-        if (time == null) return;
-        Section section = getSectionOrPrint(course, time);
-        if (section == null) return;
-        if (schedule.alreadyEnrolledInCourse(student, course)) {
-            printLine("[" + profile + "] already enrolled in " + course.getNumber());
-            return;
-        }
-        if (!meetsStandingPrereq(student, course, profile)) return;
-        if (!meetsMajorPrereq(student, course, profile)) return;
-        if (schedule.hasTimeConflict(student, time)) {
-            printLine("Time conflict.");
-            return;
-        }
-        schedule.enroll(makeSectionLookupKey(course, time), student);
-
-        printLine("[" + profile + "] enrolled in " + course.getNumber() + " " + time);
-    }
-    @FXML
-    private void handleDrop(ActionEvent event) {
-        String firstName = enrollFirstNameField.getText().trim();
-        String lastName = enrollLastNameField.getText().trim();
-        String dobText = enrollDobField.getText().trim();
-        String courseText = courseBox.getValue();
-        String periodText = periodBox.getValue();
-        if (firstName.isEmpty() || lastName.isEmpty() || dobText.isEmpty()
-                || courseText == null || periodText == null) {
-            printLine("Missing data in command line.");
-            return;
-        }
-        Date dob = new Date(dobText);
         Profile profile = new Profile(firstName, lastName, dob);
-        Student student = getStudentOrPrint(profile);
-        if (student == null) {
+        Student key = makeStudentKey(profile);
+        int indexToRemove = -1;
+        for (int i = 0; i < studentList.size(); i++) {
+            Student s = studentList.get(i);
+            if (s != null && s.equals(key)) {
+                indexToRemove = i;
+                break;
+            }
+        }
+        if (indexToRemove == -1) {
+            printLine("[" + profile + "] is not in the list.");
             return;
         }
-        Course course = parseCourseOrPrint(courseText);
-        if (course == null) {
-            return;
-        }
-        Time time = parseTimeOrPrint(periodText);
-        if (time == null) {
-            return;
-        }
-        Section section = getSectionOrPrint(course, time);
-        if (section == null) {
-            return;
-        }
-        if (!section.contains(student)) {
-            printLine("[" + profile + "] is not enrolled in this section.");
-            return;
-        }
-        schedule.drop(makeSectionLookupKey(course, time), student);
-        printLine("[" + profile + "] dropped from " + course.getNumber() + " " + time);
+
+        studentList.remove(key);
+        populateStudentBoxes();
+
+        enrollFirstNameField.clear();
+        enrollLastNameField.clear();
+        enrollDobField.clear();
+        enrollCreditsField.clear();
+        studentListBox.setValue(null);
+
+        printLine("[" + profile + "] removed from the list.");
     }
     @FXML
     private void handleLoad() {
@@ -840,7 +841,8 @@ public class Controller {
         for (int i = 0; i < studentList.size(); i++) {
             Student s = studentList.get(i);
             if (s != null) {
-                String display = s.getProfile().toString();
+                Profile p = s.getProfile();
+                String display = p.getFirstName() + " " + p.getLastName() + " " + p.getDob();
                 studentListBox.getItems().add(display);
             }
         }
@@ -884,5 +886,30 @@ public class Controller {
             }
         }
     }
+    private void fillSelectedStudent() {
+        String selected = studentListBox.getValue();
+        if (selected == null || selected.isEmpty()) {
+            return;
+        }
+
+        for (int i = 0; i < studentList.size(); i++) {
+            Student s = studentList.get(i);
+            if (s == null) {
+                continue;
+            }
+
+            Profile p = s.getProfile();
+            String display = p.getFirstName() + " " + p.getLastName() + " " + p.getDob();
+
+            if (display.equals(selected)) {
+                enrollFirstNameField.setText(p.getFirstName());
+                enrollLastNameField.setText(p.getLastName());
+                enrollDobField.setText(p.getDob().toString());
+                enrollCreditsField.setText(String.valueOf(s.getCreditsCompleted()));
+                return;
+            }
+        }
+    }
+
 }
 
